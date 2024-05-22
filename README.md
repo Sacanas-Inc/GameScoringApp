@@ -1,3 +1,22 @@
+All games scoreboard:
+
+This scoreboard contains:
+`"Game Id", - **ultimately** an uuid associator to a game
+"Player",
+"Game Name",
+"Game Points", - an amount of points
+"Points Description" - description associated to the type of pointing (for example, in the Game Hadara you have several ways to win points (busts, territories, cards, etc..)`
+
+
+
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
