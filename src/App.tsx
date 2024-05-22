@@ -1,25 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { Form } from "./components/Form";
+import { Grid } from "./components/Grid";
+import styles from "./styles/grid-styles.module.scss";
+import { usePostBoardGames } from "./hooks/usePostBoardGames";
+import { useGetBoardGames } from "./hooks/useGetBoardGames";
+import { SearchBar } from "./components/SearchBar";
+import { BoardGame } from "./utils/types";
+import { useDownloadAsCSV } from "./hooks/useDownloadAsCSV";
+import { SortByGameId } from "./utils/helpers";
 
 function App() {
+  const { postData } = usePostBoardGames();
+  const { games, getData } = useGetBoardGames();
+  const { downloadFileAsCSV } = useDownloadAsCSV();
+
+  const [filteredGames, setFilteredGames] = useState<BoardGame[] | undefined>(
+    []
+  );
+
+  useEffect(() => {
+    setFilteredGames(SortByGameId(games));
+  }, [games]);
+  const handleSearch = (searchText: string) => {
+    setFilteredGames(
+      SortByGameId(
+        games?.filter((game) =>
+          game.gameName?.toLowerCase().includes(searchText.toLowerCase())
+        )
+      )
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
+      <div className={styles.gridContainer}>
+        <SearchBar handleSearch={handleSearch} />
+        <Grid games={filteredGames} />
+        <Form
+          postData={(newGameData) =>
+            postData(newGameData).then(() => getData())
+          }
+        />
+        <button
+          className={styles.formButton}
+          onClick={() => downloadFileAsCSV(filteredGames)}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          Download File
+        </button>
+      </div>
+    </>
   );
 }
 
