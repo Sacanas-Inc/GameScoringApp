@@ -6,8 +6,9 @@ const initialFormState = {
   playerName: "",
   gameId: "",
   gameName: "",
+  matchId: "",
   gamePoints: "",
-  gamePointsDescription: "",
+  pointsDescription: "",
 };
 
 export const Form = ({
@@ -58,6 +59,14 @@ export const Form = ({
         />
         <input
           onChange={AddGame}
+          type="text"
+          placeholder="Match Id"
+          name="matchId"
+          className={styles.formField}
+          value={newGameData.matchId}
+        />
+        <input
+          onChange={AddGame}
           type="number"
           placeholder="Game Points"
           name="gamePoints"
@@ -68,9 +77,9 @@ export const Form = ({
           onChange={AddGame}
           type="text"
           placeholder="Points Description"
-          name="gamePointsDescription"
+          name="pointsDescription"
           className={styles.formField}
-          value={newGameData.gamePointsDescription}
+          value={newGameData.pointsDescription}
         />
       </div>
 

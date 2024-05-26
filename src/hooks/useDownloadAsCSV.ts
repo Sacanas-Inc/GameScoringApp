@@ -15,7 +15,7 @@ export const useDownloadAsCSV = () => {
     const rows = Object.values(filteredGames)
       .map(
         (game) =>
-          `${game.gameId}, ${game.playerName}, ${game.gameName}, ${game.gamePoints},${game.gamePointsDescription}`
+          `${game.gameId}, ${game.playerName}, ${game.gameName}, ${game.gamePoints},${game.pointsDescription}`
       )
       .join("\n");
     const blob = new Blob([header + rows], { type: "text/csv" });

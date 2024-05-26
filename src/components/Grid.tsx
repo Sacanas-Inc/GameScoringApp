@@ -17,7 +17,7 @@ export const Grid = ({ games }: { games: BoardGame[] | undefined }) => {
             <div className={styles.gridCell}>{game.gameId}</div>
             <div className={styles.gridCell}>{game.gameName}</div>
             <div className={styles.gridCell}>{game.gamePoints}</div>
-            <div className={styles.gridCell}>{game.gamePointsDescription}</div>
+            <div className={styles.gridCell}>{game.pointsDescription}</div>
           </div>
         ))}
     </div>

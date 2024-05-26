@@ -38,8 +38,8 @@ function App() {
         <SearchBar handleSearch={handleSearch} />
         <Grid games={filteredGames} />
         <Form
-          postData={(newGameData) =>
-            postData(newGameData).then(() => getData())
+          postData={
+            (newGameData) => postData([newGameData]).then(() => getData()) // Wrap newGameData in an array
           }
         />
         <button

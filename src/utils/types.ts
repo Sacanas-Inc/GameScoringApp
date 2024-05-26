@@ -1,9 +1,10 @@
 export type BoardGame = {
   id?: string;
-  playerName: string;
   gameId: string;
   gameName: string;
+  matchId: string;
+  playerName: string;
   gamePoints: number | string;
-  gamePointsDescription: string;
+  pointsDescription: string;
   createdDate?: Date;
 };

@@ -6,12 +6,16 @@ export const useGetBoardGames = () => {
 
   const getData = async () => {
     try {
-      await fetch("https://664caef8ede9a2b556512fff.mockapi.io/board_game", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      await fetch(
+        "https://gamescoringapi.azurewebsites.net/match-data-points-all",
+        //"http://localhost:5097/match-data-points-all",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((message) => message.json())
         .then((data) => setGames(data));
     } catch (error) {
