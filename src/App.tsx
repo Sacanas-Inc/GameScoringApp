@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Form } from "./components/Form";
 import { Grid } from "./components/Grid";
+import GamesComboBox from "./components/GamesComboBox";
+
 import styles from "./styles/grid-styles.module.scss";
 import { usePostBoardGames } from "./hooks/usePostBoardGames";
 import { useGetBoardGames } from "./hooks/useGetBoardGames";
@@ -35,11 +37,12 @@ function App() {
     <>
       <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
       <div className={styles.gridContainer}>
+        <GamesComboBox />
         <SearchBar handleSearch={handleSearch} />
         <Grid games={filteredGames} />
         <Form
-          postData={
-            (newGameData) => postData([newGameData]).then(() => getData()) // Wrap newGameData in an array
+          postData={(newGameData) =>
+            postData([newGameData]).then(() => getData())
           }
         />
         <button

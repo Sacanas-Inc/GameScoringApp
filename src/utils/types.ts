@@ -8,3 +8,13 @@ export type BoardGame = {
   pointsDescription: string;
   createdDate?: Date;
 };
+
+export interface Game {
+  id: number;
+  gameName: string;
+  gameDescription: string | null;
+  minPlayers: number;
+  maxPlayers: number;
+  averageDuration: number;
+  matches: any[] | null;
+}
