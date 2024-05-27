@@ -12,6 +12,10 @@ export const SortByGameId = (games: BoardGame[] | undefined): BoardGame[] => {
       return 0; // Handle undefined values appropriately
     }
 
-    return a.gameId.localeCompare(b.gameId);
+    // Ensure gameId is treated as a string
+    const gameIdA = String(a.gameId);
+    const gameIdB = String(b.gameId);
+
+    return gameIdA.localeCompare(gameIdB);
   });
 };
