@@ -1,6 +1,6 @@
-import { BoardGame } from "./types";
+import { Match } from "./types";
 
-export const SortByGameId = (games: BoardGame[] | undefined): BoardGame[] => {
+export const SortByGameId = (games: Match[] | undefined): Match[] => {
   if (!games) {
     console.warn("No games provided for sorting.");
     return [];

@@ -1,27 +1,18 @@
-import { useEffect, useState } from "react";
-import { Form } from "./components/Form";
-import { Grid } from "./components/Grid";
-import styles from "./styles/grid-styles.module.scss";
 import { usePostBoardGames } from "./hooks/usePostBoardGames";
-import { useGetBoardGames } from "./hooks/useGetBoardGames";
-import { SearchBar } from "./components/SearchBar";
-import { BoardGame } from "./utils/types";
-import { useDownloadAsCSV } from "./hooks/useDownloadAsCSV";
-import { SortByGameId } from "./utils/helpers";
+import { useGetMatchGames } from "./hooks/useGetMatchGames";
+import { GameList } from "./components/GameList";
+import { GlobalContext } from "./context/globalContext";
+import { useFetchAllGames } from "./hooks/useFetchAllGames";
 
 function App() {
   const { postData } = usePostBoardGames();
-  const { games, getData } = useGetBoardGames();
-  const { downloadFileAsCSV } = useDownloadAsCSV();
+  const { matches } = useGetMatchGames();
+  const { games, refetchGames } = useFetchAllGames();
 
-  const [filteredGames, setFilteredGames] = useState<BoardGame[] | undefined>(
-    []
-  );
-
-  useEffect(() => {
+  /*  useEffect(() => {
     setFilteredGames(SortByGameId(games));
-  }, [games]);
-  const handleSearch = (searchText: string) => {
+  }, [games]); */
+  /*  const handleSearch = (searchText: string) => {
     setFilteredGames(
       SortByGameId(
         games?.filter((game) =>
@@ -29,26 +20,16 @@ function App() {
         )
       )
     );
-  };
+  }; */
 
   return (
     <>
       <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
-      <div className={styles.gridContainer}>
-        <SearchBar handleSearch={handleSearch} />
-        <Grid games={filteredGames} />
-        <Form
-          postData={
-            (newGameData) => postData([newGameData]).then(() => getData()) // Wrap newGameData in an array
-          }
-        />
-        <button
-          className={styles.formButton}
-          onClick={() => downloadFileAsCSV(filteredGames)}
-        >
-          Download File
-        </button>
-      </div>
+      <GlobalContext.Provider
+        value={{ games, matches, refetchGames, postData }}
+      >
+        <GameList />
+      </GlobalContext.Provider>
     </>
   );
 }

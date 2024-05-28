@@ -1,0 +1,16 @@
+// styles/games-combobox-styles.scss
+
+.gamesComboBox-wrapper {
+  display: inline-block;
+  margin-right: 10px; // Adjust as needed
+}
+
+.gamesComboBox-wrapper label {
+  margin-right: 5px; // Adjust as needed
+}
+
+.gamesComboBox-wrapper select {
+  margin-left: 5px; // Adjust as needed
+  padding: 5px;
+  border-radius: 5px;
+}

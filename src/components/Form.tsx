@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BoardGame } from "../utils/types";
+import { Match } from "../utils/types";
 import styles from "../styles/grid-styles.module.scss";
 
 const initialFormState = {
@@ -7,16 +7,22 @@ const initialFormState = {
   gameId: "",
   gameName: "",
   matchId: "",
-  gamePoints: "",
+  gamePoints: 0,
   pointsDescription: "",
 };
 
 export const Form = ({
+  filteredMatches,
   postData,
 }: {
-  postData: (params: BoardGame) => Promise<void>;
+  filteredMatches: Match[];
+  postData: (params: Match) => Promise<void>;
 }) => {
-  const [newGameData, setNewGameData] = useState<BoardGame>(initialFormState);
+  const [newGameData, setNewGameData] = useState<Match>(
+    filteredMatches.length > 0
+      ? { ...initialFormState, gameId: filteredMatches[0].gameId }
+      : initialFormState
+  );
 
   const AddGame = (e: any) => {
     const { name, value } = e.target;
@@ -42,6 +48,7 @@ export const Form = ({
           value={newGameData.playerName}
         />
         <input
+          disabled={filteredMatches.length > 0}
           onChange={AddGame}
           type="text"
           placeholder="Game Id"
