@@ -1,7 +1,7 @@
-import { BoardGame } from "../utils/types";
+import { Match } from "../utils/types";
 
 export const useDownloadAsCSV = () => {
-  const downloadFileAsCSV = (filteredGames: BoardGame[] | undefined) => {
+  const downloadFileAsCSV = (filteredGames: Match[] | undefined) => {
     const csvHeaders = [
       "Game Id",
       "Player",

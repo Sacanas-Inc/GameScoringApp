@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { BoardGame } from "../utils/types";
+import { Match } from "../utils/types";
 
-export const useGetBoardGames = () => {
-  const [games, setGames] = useState<BoardGame[]>();
+export const useGetMatchGames = () => {
+  const [matches, setMatches] = useState<Match[]>([]);
 
   const getData = async () => {
     try {
@@ -17,7 +17,7 @@ export const useGetBoardGames = () => {
         }
       )
         .then((message) => message.json())
-        .then((data) => setGames(data));
+        .then((data) => setMatches(data));
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +28,7 @@ export const useGetBoardGames = () => {
   }, []);
 
   return {
-    games,
+    matches,
     getData,
   };
 };

@@ -1,0 +1,67 @@
+.card {
+  width: 250px;
+  height: 300px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+  border-radius: 2px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: white;
+}
+
+.cardTitle {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.listMatchButton,
+.addMatchButton {
+  cursor: pointer;
+  width: 150px;
+  height: 40px;
+  background-color: antiquewhite;
+  border: 1px solid black;
+  border-radius: 2px;
+  &:hover {
+    background-color: rgb(235, 235, 235);
+  }
+}
+
+.addGameButton {
+  cursor: pointer;
+  width: 75px;
+  height: 75px;
+  font-size: 30px;
+  background-color: rgb(215, 215, 215);
+  border: 2px dashed black;
+  border-radius: 50px;
+  &:hover {
+    background-color: rgb(235, 235, 235);
+  }
+}
+
+.deleteButton {
+  cursor: pointer;
+  width: 150px;
+  height: 40px;
+  background-color: rgb(159, 42, 62);
+  color: white;
+  border: 1px solid black;
+  border-radius: 2px;
+  &:hover {
+    background-color: rgb(177, 0, 0);
+  }
+}
+
+.card:has(.addGameButton) {
+  border: 2px dashed black !important;
+}
+
+.addGameButton::before {
+  content: "+";
+}

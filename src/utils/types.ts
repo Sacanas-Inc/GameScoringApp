@@ -1,10 +1,10 @@
-export type BoardGame = {
+export type Match = {
   id?: string;
   gameId: string;
   gameName: string;
   matchId: string;
   playerName: string;
-  gamePoints: number | string;
+  gamePoints: number;
   pointsDescription: string;
   createdDate?: Date;
 };
@@ -12,9 +12,9 @@ export type BoardGame = {
 export interface Game {
   id: number;
   gameName: string;
-  gameDescription: string | null;
+  gameDescription: any;
   minPlayers: number;
   maxPlayers: number;
   averageDuration: number;
-  matches: any[] | null;
+  matches: Match[];
 }

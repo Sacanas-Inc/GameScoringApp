@@ -1,7 +1,7 @@
-import { BoardGame } from "../utils/types";
+import { Match } from "../utils/types";
 
 export const usePostBoardGames = () => {
-  const postData = async (params: BoardGame[]) => {
+  const postData = async (params: Match[]) => {
     try {
       await fetch(
         "https://gamescoringapi.azurewebsites.net/match-data-points-all",

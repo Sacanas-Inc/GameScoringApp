@@ -25,6 +25,7 @@ export const usePostGame = () => {
         }
       );
       if (!response.ok) {
+        setError(response.statusText);
         throw new Error(`Error: ${response.statusText}`);
       }
     } catch (error) {

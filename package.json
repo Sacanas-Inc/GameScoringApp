@@ -1,5 +1,5 @@
 {
-  "name": "github-fetcher",
+  "name": "game-scoring-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "sass": "^1.77.2"
   }
 }
