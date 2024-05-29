@@ -1,35 +1,22 @@
-import { usePostBoardGames } from "./hooks/usePostBoardGames";
-import { useGetMatchGames } from "./hooks/useGetMatchGames";
-import { GameList } from "./components/GameList";
-import { GlobalContext } from "./context/globalContext";
-import { useFetchAllGames } from "./hooks/useFetchAllGames";
+import { GameList } from "./components/GameList/GameList";
+import { useGetGamesAndMatches } from "./hooks/useGetGamesAndMatches";
+import { useContext, useEffect } from "react";
+import GlobalContext from "./context/globalContext";
 
 function App() {
-  const { postData } = usePostBoardGames();
-  const { matches } = useGetMatchGames();
-  const { games, refetchGames } = useFetchAllGames();
+  const { games } = useGetGamesAndMatches();
 
-  /*  useEffect(() => {
-    setFilteredGames(SortByGameId(games));
-  }, [games]); */
-  /*  const handleSearch = (searchText: string) => {
-    setFilteredGames(
-      SortByGameId(
-        games?.filter((game) =>
-          game.gameName?.toLowerCase().includes(searchText.toLowerCase())
-        )
-      )
-    );
-  }; */
+  const { setGames } = useContext(GlobalContext);
+
+  useEffect(() => {
+    setGames(games);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [games]);
 
   return (
     <>
       <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
-      <GlobalContext.Provider
-        value={{ games, matches, refetchGames, postData }}
-      >
-        <GameList />
-      </GlobalContext.Provider>
+      <GameList />
     </>
   );
 }

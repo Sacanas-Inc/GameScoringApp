@@ -1,10 +1,22 @@
 import styles from "./card.module.scss";
-const Card = ({ children }: { children: React.ReactNode }) => {
-  return <div className={styles.card}>{children}</div>;
+const Card = ({
+  children,
+  className,
+  action,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  action?: () => void;
+}) => {
+  return (
+    <div className={className ? className : styles.card} onClick={action}>
+      {children}
+    </div>
+  );
 };
 
-Card.CardTitle = ({ title }: { title: string }) => {
-  return <h2 className={styles.cardTitle}>{title}</h2>;
+Card.CardTitle = ({ children }: { children: React.ReactNode }) => {
+  return <h2 className={styles.cardTitle}>{children}</h2>;
 };
 
 Card.ListMatchButton = ({
@@ -51,6 +63,10 @@ Card.DeleteButton = ({
       {children}
     </button>
   );
+};
+
+Card.PlayerPoints = ({ children }: { children: React.ReactNode }) => {
+  return <div className={styles.playerDataPoints}>{children}</div>;
 };
 
 export default Card;

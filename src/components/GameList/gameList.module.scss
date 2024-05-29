@@ -1,0 +1,15 @@
+.contentWrapper {
+  max-width: 1000px;
+  width: 100%;
+  left: 50%;
+  position: relative;
+  transform: translate(-50%);
+}
+
+.gameList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px;
+}

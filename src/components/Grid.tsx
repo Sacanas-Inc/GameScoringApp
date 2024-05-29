@@ -1,6 +1,6 @@
 import styles from "../styles/grid-styles.module.scss";
-import { Match } from "../utils/types";
-export const Grid = ({ games }: { games: Match[] | undefined }) => {
+import { Match, MatchDataPoints } from "../utils/types";
+export const Grid = ({ games }: { games: MatchDataPoints[] | undefined }) => {
   return (
     <div className={styles.grid}>
       <div className={styles.gridRow}>
@@ -12,8 +12,11 @@ export const Grid = ({ games }: { games: Match[] | undefined }) => {
         <div className={styles.gridColumnHeader}>Points Description</div>
       </div>
       {games !== undefined &&
-        games.map((game: Match) => (
-          <div key={game.id} className={styles.gridRow}>
+        games.map((game: MatchDataPoints) => (
+          <div
+            key={`${game.id}-${game.playerName}-${game.gamePoints}-${game.pointsDescription}`}
+            className={styles.gridRow}
+          >
             <div className={styles.gridCell}>{game.playerName}</div>
             <div className={styles.gridCell}>{game.gameId}</div>
             <div className={styles.gridCell}>{game.gameName}</div>

@@ -1,21 +1,30 @@
 .card {
   width: 250px;
-  height: 300px;
+  min-height: 300px;
   border: 2px solid black;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   gap: 10px;
   border-radius: 2px;
-  justify-content: center;
   align-items: center;
   font-weight: bold;
   font-size: 20px;
   background-color: white;
+  padding: 10px;
+  padding-top: 50px;
+
+  &:hover {
+    background-color: rgb(235, 235, 235);
+  }
+}
+
+.justify {
+  justify-content: center;
+  padding-top: 10px;
 }
 
 .cardTitle {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
 }
 
@@ -40,9 +49,9 @@
   background-color: rgb(215, 215, 215);
   border: 2px dashed black;
   border-radius: 50px;
-  &:hover {
+  /* &:hover {
     background-color: rgb(235, 235, 235);
-  }
+  } */
 }
 
 .deleteButton {
@@ -64,4 +73,12 @@
 
 .addGameButton::before {
   content: "+";
+}
+
+.playerDataPoints {
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  width: 50%;
+  justify-content: space-between;
 }

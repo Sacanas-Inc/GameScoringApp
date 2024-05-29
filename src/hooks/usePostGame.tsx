@@ -28,6 +28,7 @@ export const usePostGame = () => {
         setError(response.statusText);
         throw new Error(`Error: ${response.statusText}`);
       }
+      return response.json();
     } catch (error) {
       console.log(error);
     } finally {

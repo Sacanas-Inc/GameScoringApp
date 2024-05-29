@@ -1,46 +1,51 @@
-import { useState } from "react";
-import { Match } from "../utils/types";
+import { useContext, useState } from "react";
+import { MatchDataPoints } from "../utils/types";
 import styles from "../styles/grid-styles.module.scss";
+import GlobalContext from "../context/globalContext";
+import { usePostNewMatchRow } from "../hooks/usePostNewMatchRow";
 
 const initialFormState = {
   playerName: "",
-  gameId: "",
+  gameId: -1,
   gameName: "",
-  matchId: "",
+  matchId: -1,
   gamePoints: 0,
   pointsDescription: "",
 };
 
-export const Form = ({
-  filteredMatches,
-  postData,
-}: {
-  filteredMatches: Match[];
-  postData: (params: Match) => Promise<void>;
-}) => {
-  const [newGameData, setNewGameData] = useState<Match>(
-    filteredMatches.length > 0
-      ? { ...initialFormState, gameId: filteredMatches[0].gameId }
-      : initialFormState
-  );
+export const Form = () => {
+  const { selectedGame, selectedMatch, matchDataPoints, setMatchDataPoints } =
+    useContext(GlobalContext);
 
-  const AddGame = (e: any) => {
+  const { postData } = usePostNewMatchRow();
+  const [newGameData, setNewGameData] = useState<MatchDataPoints>({
+    ...initialFormState,
+    gameId: selectedGame,
+    matchId: selectedMatch,
+  });
+
+  const handleChangeInput = (e: any) => {
     const { name, value } = e.target;
     const newObject = { [name]: value };
     setNewGameData({ ...newGameData, ...newObject });
   };
 
-  const prepareObjectForPosting = (e: any) => {
+  const prepareObjectForPosting = async (e: any) => {
     e.preventDefault();
-    postData(newGameData);
-    setNewGameData(initialFormState);
+    const newData = await postData(newGameData);
+    setNewGameData({
+      ...initialFormState,
+      gameId: selectedGame,
+      matchId: selectedMatch,
+    });
+    setMatchDataPoints([...matchDataPoints, newData]);
   };
 
   return (
     <form onSubmit={prepareObjectForPosting}>
       <div className={styles.form}>
         <input
-          onChange={AddGame}
+          onChange={handleChangeInput}
           type="text"
           placeholder="Player Name"
           name="playerName"
@@ -48,16 +53,16 @@ export const Form = ({
           value={newGameData.playerName}
         />
         <input
-          disabled={filteredMatches.length > 0}
-          onChange={AddGame}
+          disabled={selectedGame >= 0}
+          onChange={handleChangeInput}
           type="text"
           placeholder="Game Id"
           name="gameId"
           className={styles.formField}
-          value={newGameData.gameId}
+          value={selectedGame}
         />
         <input
-          onChange={AddGame}
+          onChange={handleChangeInput}
           type="text"
           placeholder="Game Name"
           name="gameName"
@@ -65,15 +70,16 @@ export const Form = ({
           value={newGameData.gameName}
         />
         <input
-          onChange={AddGame}
+          disabled={selectedMatch >= 0}
+          onChange={handleChangeInput}
           type="text"
           placeholder="Match Id"
           name="matchId"
           className={styles.formField}
-          value={newGameData.matchId}
+          value={selectedMatch}
         />
         <input
-          onChange={AddGame}
+          onChange={handleChangeInput}
           type="number"
           placeholder="Game Points"
           name="gamePoints"
@@ -81,7 +87,7 @@ export const Form = ({
           value={newGameData.gamePoints}
         />
         <input
-          onChange={AddGame}
+          onChange={handleChangeInput}
           type="text"
           placeholder="Points Description"
           name="pointsDescription"
