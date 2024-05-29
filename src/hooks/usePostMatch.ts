@@ -17,7 +17,7 @@ export const usePostMatch = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://gamescoringapi.azurewebsites.net/matches",
+        "https://gamescoringapi.azurewebsites.net/match",
         {
           method: "POST",
           headers: {

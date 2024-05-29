@@ -19,7 +19,7 @@ export const usePostNewMatchRow = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://gamescoringapi.azurewebsites.net/match-data-point",
+        `https://gamescoringapi.azurewebsites.net/match-data-point/${matchData.matchId}`,
         {
           method: "POST",
           headers: {
