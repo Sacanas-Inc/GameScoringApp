@@ -10,7 +10,7 @@ export const useGetGameById = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://gamescoringapi.azurewebsites.net/games/${gameId}`,
+        `https://gamescoringapi.azurewebsites.net/game/${gameId}`,
         {
           headers: {
             Accept: "*/*",
