@@ -62,7 +62,6 @@ export const MatchList = () => {
   const handleGotoMatches = (matchId: string | number) => {
     navigate(`/matches/${id}/scoring/${matchId}`);
   };
-
   return (
     <>
       <h1 style={{ textAlign: "center" }}>
@@ -81,8 +80,8 @@ export const MatchList = () => {
             {"<"}
           </button>
           <div className={styles.matchList}>
-            {matches !== undefined &&
-              matches?.map((match) => (
+            {matches.length > 0 &&
+              matches?.map((match, index) => (
                 <Card
                   key={match.matchId}
                   action={() => {
@@ -99,8 +98,8 @@ export const MatchList = () => {
                     )
                   )}
                   <Card.DeleteButton
-                    action={(e) => {
-                      e.stopPropagation();
+                    tagKey={`delete-${match.matchId}-${index}`}
+                    action={() => {
                       handleDelete({ matchId: match.matchId });
                     }}
                   ></Card.DeleteButton>

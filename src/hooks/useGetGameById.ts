@@ -26,6 +26,7 @@ export const useGetGameById = () => {
       .catch((error) => {
         setError(error);
         console.error(error);
+        setGame({} as Game);
       });
   };
 

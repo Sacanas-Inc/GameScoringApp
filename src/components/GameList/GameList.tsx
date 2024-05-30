@@ -43,23 +43,24 @@ export const GameList = () => {
       <div className={styles.contentWrapper}>
         <div className={styles.gameList}>
           {loading && <Loader />}
-          {games.map((game) => (
-            <Card
-              key={game.id}
-              className={cardStyles.card + " " + cardStyles.justify}
-              action={(e) => {
-                handleGotoMatches(game.id);
-              }}
-            >
-              <Card.CardTitle>{game.gameName}</Card.CardTitle>
-              <Card.DeleteButton
+          {games.length > 0 &&
+            games.map((game, index) => (
+              <Card
+                key={game.id}
+                className={cardStyles.card + " " + cardStyles.justify}
                 action={(e) => {
-                  e.stopPropagation();
-                  handleDelete({ gameId: game.id });
+                  handleGotoMatches(game.id);
                 }}
-              ></Card.DeleteButton>
-            </Card>
-          ))}
+              >
+                <Card.CardTitle>{game.gameName}</Card.CardTitle>
+                <Card.DeleteButton
+                  tagKey={`delete-${game.id}-${index}`}
+                  action={() => {
+                    handleDelete({ gameId: game.id });
+                  }}
+                ></Card.DeleteButton>
+              </Card>
+            ))}
 
           <Card action={handleAddNewGame}>
             <Card.CardTitle>Add Game</Card.CardTitle>

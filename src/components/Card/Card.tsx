@@ -1,8 +1,8 @@
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
+import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { Toast } from "primereact/toast";
-import React, { useState, useRef } from "react";
-
+import React, { useRef, useState } from "react";
 import styles from "./card.module.scss";
+import { Portal } from "../Portal/Portal";
 
 const Card = ({
   children,
@@ -60,12 +60,23 @@ Card.AddGameButton = ({ action }: { action: () => void }) => {
 
 Card.DeleteButton = ({
   children,
+  tagKey,
   action,
 }: {
   children?: React.ReactNode;
-  action: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  tagKey: string;
+  action: () => void;
 }) => {
-  return <DeleteButton children={children} action={action} />;
+  return (
+    <DeleteButton
+      tagKey={tagKey}
+      action={() => {
+        action();
+      }}
+    >
+      {children}
+    </DeleteButton>
+  );
 };
 
 Card.PlayerPoints = ({ children }: { children: React.ReactNode }) => {
@@ -76,16 +87,16 @@ export default Card;
 
 const DeleteButton = ({
   children,
+  tagKey,
   action,
 }: {
   children: React.ReactNode;
-  action: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  tagKey: string;
+  action: () => void;
 }) => {
-  const [visible, setVisible] = useState<boolean>(false);
   const toast = useRef<Toast>(null);
-
-  const accept = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
+  const [visible, setVisible] = useState(false);
+  const accept = () => {
     if (toast.current == null) return;
     toast.current.show({
       severity: "info",
@@ -93,7 +104,6 @@ const DeleteButton = ({
       detail: "You have accepted",
       life: 3000,
     });
-    action(e);
   };
 
   const reject = () => {
@@ -106,26 +116,44 @@ const DeleteButton = ({
     });
   };
 
-  const confirm1 = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    confirmDialog({
-      message: "Are you sure you want to proceed?",
-      header: "Confirmation",
-      icon: "pi pi-exclamation-triangle",
-      accept: () => accept(e),
-      reject,
-    });
-  };
-
   return (
     <div>
-      <Toast ref={toast} />
-      <ConfirmDialog icon="pi pi-exclamation-triangle" />
+      <Portal>
+        <Toast
+          ref={toast}
+          pt={{
+            root: {
+              onClick: (e) => e.stopPropagation(),
+            },
+            closeButton: {
+              onClick: (e) => e.stopPropagation(),
+            },
+          }}
+        />
+        <ConfirmDialog
+          closeOnEscape
+          modal
+          icon="pi pi-exclamation-triangle"
+          tagKey={tagKey}
+          visible={visible}
+          onHide={() => setVisible(false)}
+          message="Are you sure you want to proceed?"
+          header="Confirmation"
+          accept={() => {
+            accept();
+            action();
+          }}
+          reject={() => reject()}
+        />
+      </Portal>
       <button
         className={styles.deleteButton}
         onClick={(e) => {
-          confirm1(e);
+          e.stopPropagation();
+          setVisible(true);
         }}
+        aria-controls={visible ? "dlg_confirmation" : undefined}
+        aria-expanded={visible ? true : false}
       >
         {children}
       </button>
