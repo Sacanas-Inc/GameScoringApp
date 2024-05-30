@@ -1,28 +1,42 @@
-import { createContext } from "react";
-import { Match } from "../utils/types";
+import React, { createContext } from "react";
+import { Game, Match, MatchDataPoints } from "../utils/types";
 
-export const GlobalContext = createContext({
-  games: [
+// Define the shape of the context data
+interface GlobalContextProps {
+  games: Game[];
+  matches: Match[];
+  matchDataPoints: MatchDataPoints[];
+  selectedGame: number;
+  selectedMatch: number;
+  setSelectedGame: React.Dispatch<React.SetStateAction<number>>;
+  setGames: React.Dispatch<React.SetStateAction<Game[]>>;
+  setMatches: React.Dispatch<React.SetStateAction<Match[]>>;
+  setMatchDataPoints: React.Dispatch<React.SetStateAction<MatchDataPoints[]>>;
+  setSelectedMatch: React.Dispatch<React.SetStateAction<number>>;
+}
+
+// Create the context with default values
+const GlobalContext = createContext<GlobalContextProps>({
+  games: [],
+  matches: [],
+  matchDataPoints: [
     {
-      id: 0,
+      gameId: -1,
       gameName: "",
-      gameDescription: "",
-      minPlayers: 0,
-      maxPlayers: 0,
-      averageDuration: 0,
-      matches: [] as any[],
-    },
-  ],
-  matches: [
-    {
-      gameId: "",
-      gameName: "",
-      matchId: "",
+      gamePoints: 0,
+      matchId: -1,
       playerName: "",
-      gamePoints: 1,
       pointsDescription: "",
     },
   ],
-  refetchGames: () => {},
-  postData: (params: Match[]) => {},
+  selectedGame: -1,
+  selectedMatch: -1,
+  setGames: () => {},
+  setMatches: () => {},
+  setMatchDataPoints: () => {},
+  setSelectedGame: () => {},
+  setSelectedMatch: () => {},
 });
+
+// Export the context for use in other components
+export default GlobalContext;

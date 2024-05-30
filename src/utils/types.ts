@@ -1,12 +1,20 @@
-export type Match = {
-  id?: string;
-  gameId: string;
+export type MatchDataPoints = {
+  id?: number;
+  gameId: number;
   gameName: string;
-  matchId: string;
+  matchId: number;
   playerName: string;
   gamePoints: number;
   pointsDescription: string;
   createdDate?: Date;
+};
+
+export type Match = {
+  gameId?: number;
+  matchDataPoints: MatchDataPoints[];
+  matchDate?: Date;
+  matchId: number;
+  notes?: string | null;
 };
 
 export interface Game {
@@ -17,4 +25,12 @@ export interface Game {
   maxPlayers: number;
   averageDuration: number;
   matches: Match[];
+}
+
+export type Games = Game & { matches: Match[] }[];
+
+export interface MatchDataRow {
+  playerName: string;
+  gamePoints: number;
+  pointsDescription: string;
 }

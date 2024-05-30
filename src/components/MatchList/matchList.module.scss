@@ -1,0 +1,22 @@
+.returnButton {
+  width: 25px;
+  height: 25px;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #f0f0f0;
+  &:hover {
+    background-color: #dedede;
+  }
+}
+
+.matchList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px;
+}

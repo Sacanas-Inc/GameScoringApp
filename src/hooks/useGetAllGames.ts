@@ -1,21 +1,16 @@
-// hooks/usePostGame.ts
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Game } from "../utils/types";
 import api from "../api/api";
 
-// Define the type for game data
-interface GameData {
-  gameName: string;
-  gameDescription: string;
-}
-
-export const usePostGame = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+export const useGetAllGames = () => {
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const postGame = async (gameData: GameData) => {
+  const fetchGames = async () => {
     setLoading(true);
     return await api
-      .PostGame(gameData)
+      .GetAllGames()
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
@@ -23,6 +18,7 @@ export const usePostGame = () => {
           });
         return response.json();
       })
+      .then((data) => setGames(data))
       .finally(() => {
         setLoading(false);
         setError(null);
@@ -33,5 +29,13 @@ export const usePostGame = () => {
       });
   };
 
-  return { postGame, loading, error };
+  useEffect(() => {
+    fetchGames();
+  }, []);
+
+  const refetchGames = () => {
+    fetchGames(); // Manually trigger data fetch
+  };
+
+  return { games, loading, error, refetchGames };
 };

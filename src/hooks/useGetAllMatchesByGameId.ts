@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { Game } from "../utils/types";
+import { useEffect, useState } from "react";
+import { Match } from "../utils/types";
 import api from "../api/api";
 
-export const useGetGameById = () => {
-  const [game, setGame] = useState<Game>();
+export const useGetAllMatchesByGameId = (gameId?: string | number) => {
+  const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGame = async ({ gameId }: { gameId: string | number }) => {
+  const getData = async () => {
     setLoading(true);
     return await api
-      .GetGameById(gameId)
+      .GetAllMatchesByGameId(gameId)
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
@@ -18,7 +18,7 @@ export const useGetGameById = () => {
           });
         return response.json();
       })
-      .then((data) => setGame(data))
+      .then((data) => setMatches(data))
       .finally(() => {
         setLoading(false);
         setError(null);
@@ -29,5 +29,19 @@ export const useGetGameById = () => {
       });
   };
 
-  return { game, loading, error, fetchGame };
+  const refetch = () => {
+    getData();
+  };
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return {
+    loading,
+    error,
+    matches,
+    getData,
+    refetch,
+  };
 };

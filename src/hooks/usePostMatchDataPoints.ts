@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Game } from "../utils/types";
 import api from "../api/api";
+import { MatchDataRow } from "../utils/types";
 
-export const useGetGameById = () => {
-  const [game, setGame] = useState<Game>();
+export const usePostMatchDataPoints = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGame = async ({ gameId }: { gameId: string | number }) => {
+  const postData = async (
+    matchDataPoints: MatchDataRow,
+    matchId: string | number
+  ) => {
     setLoading(true);
     return await api
-      .GetGameById(gameId)
+      .PostMatchDataPoints(matchId, JSON.stringify(matchDataPoints))
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
@@ -18,7 +20,6 @@ export const useGetGameById = () => {
           });
         return response.json();
       })
-      .then((data) => setGame(data))
       .finally(() => {
         setLoading(false);
         setError(null);
@@ -29,5 +30,5 @@ export const useGetGameById = () => {
       });
   };
 
-  return { game, loading, error, fetchGame };
+  return { postData, loading, error };
 };

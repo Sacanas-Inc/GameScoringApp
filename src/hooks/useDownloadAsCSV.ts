@@ -1,7 +1,7 @@
-import { Match } from "../utils/types";
+import { MatchDataPoints } from "../utils/types";
 
 export const useDownloadAsCSV = () => {
-  const downloadFileAsCSV = (filteredGames: Match[] | undefined) => {
+  const downloadFileAsCSV = (filteredGames: MatchDataPoints[] | undefined) => {
     const csvHeaders = [
       "Game Id",
       "Player",
