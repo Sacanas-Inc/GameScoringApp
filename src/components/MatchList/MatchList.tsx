@@ -8,11 +8,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../Loader/Loader";
 import { useGetAllMatchesByGameId } from "../../hooks/useGetAllMatchesByGameId";
 import { useGetGameById } from "../../hooks/useGetGameById";
+import { useDeleteMatchById } from "../../hooks/useDeleteMatchAndDataPoints";
 
 export const MatchList = () => {
   const { id = 0 } = useParams();
   const { matches, loading, refetch } = useGetAllMatchesByGameId(id);
   const { game, fetchGame } = useGetGameById();
+  const { deleteMatch } = useDeleteMatchById();
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -26,6 +28,11 @@ export const MatchList = () => {
   };
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const handleDelete = async ({ matchId }: { matchId: number }) => {
+    await deleteMatch({ matchId: matchId });
+    refetch();
   };
 
   const handleMatchAdded = () => {
@@ -91,6 +98,12 @@ export const MatchList = () => {
                       </Card.PlayerPoints>
                     )
                   )}
+                  <Card.DeleteButton
+                    action={(e) => {
+                      e.stopPropagation();
+                      handleDelete({ matchId: match.matchId });
+                    }}
+                  ></Card.DeleteButton>
                 </Card>
               ))}
             <Card action={handleAddNewMatch}>
