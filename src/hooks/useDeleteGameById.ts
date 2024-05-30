@@ -12,7 +12,6 @@ export const useDeleteGameById = () => {
           throw new Error(`API response Status: ${response.status}`, {
             cause: response.statusText,
           });
-        return response.json();
       })
       .finally(() => {
         setLoading(false);
