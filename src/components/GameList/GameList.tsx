@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../Card/Card";
-import GlobalContext from "../../context/globalContext";
 import { Game } from "../../utils/types";
 import { useDeleteGameById } from "../../hooks/useDeleteGameById";
 import styles from "./gameList.module.scss";
@@ -9,6 +8,7 @@ import cardStyles from "../Card/card.module.scss";
 import { NewGameForm } from "../NewGameForm/NewGameForm";
 import Popup from "../Popup/Popup";
 import { useGetAllGames } from "../../hooks/useGetAllGames";
+import { Loader } from "../Loader/Loader";
 
 export const GameList = () => {
   const { deleteGame } = useDeleteGameById();
@@ -42,6 +42,7 @@ export const GameList = () => {
       <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
       <div className={styles.contentWrapper}>
         <div className={styles.gameList}>
+          {loading && <Loader />}
           {games.map((game) => (
             <Card
               key={game.id}

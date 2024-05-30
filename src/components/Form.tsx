@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
-import { MatchDataPoints, MatchDataRow } from "../utils/types";
+import { useState } from "react";
+import { MatchDataRow } from "../utils/types";
 import styles from "../styles/grid-styles.module.scss";
-import GlobalContext from "../context/globalContext";
 import { usePostMatchDataPoints } from "../hooks/usePostMatchDataPoints";
 import { useParams } from "react-router-dom";
 
@@ -14,7 +13,7 @@ const initialFormState = {
 export const Form = ({ refetch }: { refetch: () => void }) => {
   const { postData } = usePostMatchDataPoints();
 
-  const { id = 0, matchId = 0 } = useParams();
+  const { matchId = 0 } = useParams();
   const [newGameData, setNewGameData] = useState<MatchDataRow>({
     ...initialFormState,
   });

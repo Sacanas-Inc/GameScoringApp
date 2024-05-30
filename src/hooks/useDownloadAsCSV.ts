@@ -1,4 +1,4 @@
-import { Match, MatchDataPoints } from "../utils/types";
+import { MatchDataPoints } from "../utils/types";
 
 export const useDownloadAsCSV = () => {
   const downloadFileAsCSV = (filteredGames: MatchDataPoints[] | undefined) => {

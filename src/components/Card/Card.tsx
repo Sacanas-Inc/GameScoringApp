@@ -1,4 +1,3 @@
-import { ReactEventHandler } from "react";
 import styles from "./card.module.scss";
 const Card = ({
   children,
