@@ -1,4 +1,5 @@
 import React from "react";
+import { PrimeReactProvider } from "primereact/api";
 import { GameList } from "./components/GameList/GameList";
 import { useGetAllGames } from "./hooks/useGetAllGames";
 import { useContext, useEffect } from "react";
@@ -32,7 +33,14 @@ function App() {
   ]);
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <PrimeReactProvider
+        value={{
+          zIndex: { modal: 1100, toast: 1200, overlay: 1000 },
+          autoZIndex: true,
+        }}
+      >
+        <RouterProvider router={router} />
+      </PrimeReactProvider>
     </React.StrictMode>
   );
 }

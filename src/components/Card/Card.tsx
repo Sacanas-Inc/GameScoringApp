@@ -1,4 +1,4 @@
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { Toast } from "primereact/toast";
 import React, { useState, useRef } from "react";
 
@@ -85,6 +85,7 @@ const DeleteButton = ({
   const toast = useRef<Toast>(null);
 
   const accept = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
     if (toast.current == null) return;
     toast.current.show({
       severity: "info",
@@ -119,7 +120,7 @@ const DeleteButton = ({
   return (
     <div>
       <Toast ref={toast} />
-      <ConfirmDialog />
+      <ConfirmDialog icon="pi pi-exclamation-triangle" />
       <button
         className={styles.deleteButton}
         onClick={(e) => {
