@@ -7,7 +7,7 @@ const url = (param?: string | number) => {
 
     getMatchById: `match/${param}?includeDataPoints=true`, // 'https://gamescoringapi.azurewebsites.net/match/6?includeDataPoints=true'
     postMatch: "match",
-    deleteMatchAndDataPoints: `match-data-point/${param}`,
+    deleteMatchAndDataPoints: `/match-and-data-points/${param}`,
   };
 };
 
