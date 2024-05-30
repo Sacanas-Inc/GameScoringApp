@@ -1,4 +1,5 @@
 import React from "react";
+import { PrimeReactProvider } from "primereact/api";
 import { GameList } from "./components/GameList/GameList";
 import { useGetAllGames } from "./hooks/useGetAllGames";
 import { useContext, useEffect } from "react";
@@ -32,7 +33,34 @@ function App() {
   ]);
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <PrimeReactProvider
+        value={{
+          zIndex: { modal: 1100, toast: 1200, overlay: 1000 },
+          autoZIndex: true,
+          pt: {
+            confirmdialog: {
+              root: {
+                onClick: (e) => e.stopPropagation(),
+              },
+              closeButton: {
+                onClick: (e: any) => e.stopPropagation(),
+              },
+              acceptButton: {
+                root: { onClick: (e) => e.stopPropagation() },
+              },
+              rejectButton: {
+                root: { onClick: (e) => e.stopPropagation() },
+              },
+            },
+            dialog: {
+              mask: { onClick: (e) => e.stopPropagation() },
+              root: { onClick: (e) => e.stopPropagation() },
+            },
+          },
+        }}
+      >
+        <RouterProvider router={router} />
+      </PrimeReactProvider>
     </React.StrictMode>
   );
 }

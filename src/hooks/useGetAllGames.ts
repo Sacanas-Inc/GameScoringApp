@@ -12,10 +12,7 @@ export const useGetAllGames = () => {
     return await api
       .GetAllGames()
       .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText,
-          });
+        if (!response.ok) return [];
         return response.json();
       })
       .then((data) => setGames(data))

@@ -16,7 +16,12 @@ export const useGetMatchGames = () => {
           throw new Error(`API response Status: ${response.status}`, {
             cause: response.statusText,
           });
-        return response.json();
+        try {
+          return response.json();
+        } catch (err) {
+          setMatches([]);
+          throw err;
+        }
       })
       .then((data) => setMatches(data))
       .finally(() => {

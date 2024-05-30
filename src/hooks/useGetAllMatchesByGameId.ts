@@ -12,10 +12,8 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
     return await api
       .GetAllMatchesByGameId(gameId)
       .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText,
-          });
+        if (!response.ok) return [];
+
         return response.json();
       })
       .then((data) => setMatches(data))
@@ -25,7 +23,7 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
       })
       .catch((error) => {
         setError(error);
-        console.error(error);
+        //console.error(error);
       });
   };
 
