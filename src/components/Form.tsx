@@ -1,27 +1,22 @@
 import { useContext, useState } from "react";
-import { MatchDataPoints } from "../utils/types";
+import { MatchDataPoints, MatchDataRow } from "../utils/types";
 import styles from "../styles/grid-styles.module.scss";
 import GlobalContext from "../context/globalContext";
-import { usePostNewMatchRow } from "../hooks/usePostNewMatchRow";
+import { usePostMatchDataPoints } from "../hooks/usePostMatchDataPoints";
+import { useParams } from "react-router-dom";
 
 const initialFormState = {
   playerName: "",
-  gameId: -1,
-  gameName: "",
-  matchId: -1,
   gamePoints: 0,
   pointsDescription: "",
 };
 
-export const Form = () => {
-  const { selectedGame, selectedMatch, matchDataPoints, setMatchDataPoints } =
-    useContext(GlobalContext);
+export const Form = ({ refetch }: { refetch: () => void }) => {
+  const { postData } = usePostMatchDataPoints();
 
-  const { postData } = usePostNewMatchRow();
-  const [newGameData, setNewGameData] = useState<MatchDataPoints>({
+  const { id = 0, matchId = 0 } = useParams();
+  const [newGameData, setNewGameData] = useState<MatchDataRow>({
     ...initialFormState,
-    gameId: selectedGame,
-    matchId: selectedMatch,
   });
 
   const handleChangeInput = (e: any) => {
@@ -32,13 +27,13 @@ export const Form = () => {
 
   const prepareObjectForPosting = async (e: any) => {
     e.preventDefault();
-    const newData = await postData(newGameData);
+
+    await postData(newGameData, matchId);
+
     setNewGameData({
       ...initialFormState,
-      gameId: selectedGame,
-      matchId: selectedMatch,
     });
-    setMatchDataPoints([...matchDataPoints, newData]);
+    refetch();
   };
 
   return (
@@ -51,32 +46,6 @@ export const Form = () => {
           name="playerName"
           className={styles.formField}
           value={newGameData.playerName}
-        />
-        <input
-          disabled={selectedGame >= 0}
-          onChange={handleChangeInput}
-          type="text"
-          placeholder="Game Id"
-          name="gameId"
-          className={styles.formField}
-          value={selectedGame}
-        />
-        <input
-          onChange={handleChangeInput}
-          type="text"
-          placeholder="Game Name"
-          name="gameName"
-          className={styles.formField}
-          value={newGameData.gameName}
-        />
-        <input
-          disabled={selectedMatch >= 0}
-          onChange={handleChangeInput}
-          type="text"
-          placeholder="Match Id"
-          name="matchId"
-          className={styles.formField}
-          value={selectedMatch}
         />
         <input
           onChange={handleChangeInput}

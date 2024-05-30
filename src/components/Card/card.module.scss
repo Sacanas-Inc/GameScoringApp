@@ -12,6 +12,7 @@
   background-color: white;
   padding: 10px;
   padding-top: 50px;
+  cursor: pointer;
 
   &:hover {
     background-color: rgb(235, 235, 235);
@@ -55,15 +56,19 @@
 }
 
 .deleteButton {
-  cursor: pointer;
-  width: 150px;
-  height: 40px;
-  background-color: rgb(159, 42, 62);
-  color: white;
-  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  background-image: url("../../images/delete-button.png");
+  background-size: contain;
+  background-color: white;
+  border: none;
+  clip-path: circle(50% at 50% 50%);
   border-radius: 2px;
+  z-index: 10;
+  position: relative;
+  transform: translateX(412%) translateY(-579%);
   &:hover {
-    background-color: rgb(177, 0, 0);
+    background-color: black;
   }
 }
 

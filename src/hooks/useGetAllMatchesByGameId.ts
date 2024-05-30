@@ -1,19 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Match } from "../utils/types";
 import api from "../api/api";
 
-interface MatchData {
-  gameId: number | string;
-  notes?: string;
-}
-
-export const usePostMatch = () => {
+export const useGetAllMatchesByGameId = (gameId?: string | number) => {
+  const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const postMatch = async (matchData: MatchData) => {
+  const getData = async () => {
     setLoading(true);
     return await api
-      .PostMatch(matchData)
+      .GetAllMatchesByGameId(gameId)
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
@@ -21,6 +18,7 @@ export const usePostMatch = () => {
           });
         return response.json();
       })
+      .then((data) => setMatches(data))
       .finally(() => {
         setLoading(false);
         setError(null);
@@ -31,5 +29,19 @@ export const usePostMatch = () => {
       });
   };
 
-  return { postMatch, loading, error };
+  const refetch = () => {
+    getData();
+  };
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return {
+    loading,
+    error,
+    matches,
+    getData,
+    refetch,
+  };
 };

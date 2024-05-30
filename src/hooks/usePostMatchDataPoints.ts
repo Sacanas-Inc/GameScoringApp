@@ -1,19 +1,18 @@
 import { useState } from "react";
 import api from "../api/api";
+import { MatchDataRow } from "../utils/types";
 
-interface MatchData {
-  gameId: number | string;
-  notes?: string;
-}
-
-export const usePostMatch = () => {
+export const usePostMatchDataPoints = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const postMatch = async (matchData: MatchData) => {
+  const postData = async (
+    matchDataPoints: MatchDataRow,
+    matchId: string | number
+  ) => {
     setLoading(true);
     return await api
-      .PostMatch(matchData)
+      .PostMatchDataPoints(matchId, JSON.stringify(matchDataPoints))
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
@@ -31,5 +30,5 @@ export const usePostMatch = () => {
       });
   };
 
-  return { postMatch, loading, error };
+  return { postData, loading, error };
 };

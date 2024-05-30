@@ -1,3 +1,4 @@
+import { ReactEventHandler } from "react";
 import styles from "./card.module.scss";
 const Card = ({
   children,
@@ -6,11 +7,13 @@ const Card = ({
 }: {
   children: React.ReactNode;
   className?: string;
-  action?: () => void;
+  action?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }) => {
   return (
-    <div className={className ? className : styles.card} onClick={action}>
-      {children}
+    <div style={{ position: "relative" }}>
+      <div className={className ? className : styles.card} onClick={action}>
+        {children}
+      </div>
     </div>
   );
 };
@@ -55,8 +58,8 @@ Card.DeleteButton = ({
   children,
   action,
 }: {
-  children: React.ReactNode;
-  action: () => void;
+  children?: React.ReactNode;
+  action: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) => {
   return (
     <button className={styles.deleteButton} onClick={action}>

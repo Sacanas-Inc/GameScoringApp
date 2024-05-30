@@ -1,22 +1,28 @@
+import { useState } from "react";
+import api from "../api/api";
 export const useDeleteGameById = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const deleteGame = async ({ gameId }: { gameId: string | number }) => {
-    try {
-      const response = await fetch(
-        `https://gamescoringapi.azurewebsites.net/game/${gameId}`,
-        {
-          headers: {
-            Accept: "*/*",
-          },
-          method: "DELETE",
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
+    setLoading(true);
+    return await api
+      .DeleteGame(gameId)
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`API response Status: ${response.status}`, {
+            cause: response.statusText,
+          });
+        return response.json();
+      })
+      .finally(() => {
+        setLoading(false);
+        setError(null);
+      })
+      .catch((error) => {
+        setError(error);
+        console.error(error);
+      });
   };
 
-  return { deleteGame };
+  return { loading, error, deleteGame };
 };

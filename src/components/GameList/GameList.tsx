@@ -1,24 +1,20 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "../Card/Card";
-import { MatchList } from "../MatchList/MatchList";
 import GlobalContext from "../../context/globalContext";
-import { useGetGameById } from "../../hooks/useGetGameById";
 import { Game } from "../../utils/types";
-import { Loader } from "../Loader/Loader";
 import { useDeleteGameById } from "../../hooks/useDeleteGameById";
 import styles from "./gameList.module.scss";
 import cardStyles from "../Card/card.module.scss";
 import { NewGameForm } from "../NewGameForm/NewGameForm";
 import Popup from "../Popup/Popup";
+import { useGetAllGames } from "../../hooks/useGetAllGames";
 
 export const GameList = () => {
-  const { games, setGames, setMatches, setSelectedGame } =
-    useContext(GlobalContext);
-  const { loading } = useGetGameById();
-
   const { deleteGame } = useDeleteGameById();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showMatches, setShowMatches] = useState<boolean>(false);
+  const { games, refetchGames, loading } = useGetAllGames();
+  const navigate = useNavigate();
   const handleAddNewGame = () => {
     setShowModal(true);
   };
@@ -28,46 +24,39 @@ export const GameList = () => {
 
   const handleGameAdded = (newlyCreatedGameName: Game) => {
     // After a new game is added, update the selected game to the newly created game
-    setGames([
-      ...games,
-      {
-        ...newlyCreatedGameName,
-      },
-    ]); // We also refetch our games.
+    refetchGames(); // We also refetch our games.
     handleCloseModal(); // Close the modal
   };
 
   const handleDelete = async ({ gameId }: { gameId: number }) => {
     await deleteGame({ gameId: gameId });
-    setGames(games.filter((game) => game.id !== gameId));
+    refetchGames(); // We also refetch our games.
+  };
+
+  const handleGotoMatches = (gameId: string | number) => {
+    navigate(`/matches/${gameId}`);
   };
 
   return (
-    <div className={styles.contentWrapper}>
-      {showMatches ? (
-        <MatchList showMatches={setShowMatches} />
-      ) : loading ? (
-        <Loader />
-      ) : (
+    <>
+      <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
+      <div className={styles.contentWrapper}>
         <div className={styles.gameList}>
           {games.map((game) => (
             <Card
               key={game.id}
               className={cardStyles.card + " " + cardStyles.justify}
-              action={() => {
-                setSelectedGame(game.id);
-                setShowMatches(true);
-                setMatches(game.matches);
+              action={(e) => {
+                handleGotoMatches(game.id);
               }}
             >
               <Card.CardTitle>{game.gameName}</Card.CardTitle>
               <Card.DeleteButton
-                action={() => {
+                action={(e) => {
+                  e.stopPropagation();
                   handleDelete({ gameId: game.id });
                 }}
-              >
-                Delete
-              </Card.DeleteButton>
+              ></Card.DeleteButton>
             </Card>
           ))}
 
@@ -87,7 +76,7 @@ export const GameList = () => {
             </Popup>
           )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };

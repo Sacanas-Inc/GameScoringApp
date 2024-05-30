@@ -1,10 +1,13 @@
+import React from "react";
 import { GameList } from "./components/GameList/GameList";
-import { useGetGamesAndMatches } from "./hooks/useGetGamesAndMatches";
+import { useGetAllGames } from "./hooks/useGetAllGames";
 import { useContext, useEffect } from "react";
 import GlobalContext from "./context/globalContext";
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { MatchList } from "./components/MatchList/MatchList";
+import { MatchScoring } from "./components/MatchScoring/MatchScoring";
 function App() {
-  const { games } = useGetGamesAndMatches();
+  const { games } = useGetAllGames();
 
   const { setGames } = useContext(GlobalContext);
 
@@ -13,11 +16,24 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [games]);
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <GameList />,
+    },
+    {
+      path: "/matches/:id",
+      element: <MatchList />,
+    },
+    {
+      path: "/matches/:id/scoring/:matchId",
+      element: <MatchScoring />,
+    },
+  ]);
   return (
-    <>
-      <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
-      <GameList />
-    </>
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
   );
 }
 

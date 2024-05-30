@@ -12,12 +12,12 @@ export const NewGameForm = ({
 }) => {
   const [gameName, setGameName] = useState("");
   const [gameDescription, setGameDescription] = useState("");
-  const { postData, loading, error } = usePostGame();
+  const { postGame, loading, error } = usePostGame();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const gameData = { gameName, gameDescription };
-    const newGameData = await postData(gameData);
+    const newGameData = await postGame(gameData);
     handleGameAdded(newGameData);
     handleClose();
   };

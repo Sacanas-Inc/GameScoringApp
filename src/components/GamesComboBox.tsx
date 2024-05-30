@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useFetchAllGames } from "../hooks/useFetchAllGames";
+import { useGetAllGames } from "../hooks/useGetAllGames";
 import { Game } from "../utils/types";
 import "../styles/games-combobox-styles.scss"; // Import the SCSS file
 import NewGameButton from "./NewGameButton";
 import NewGameFormModal from "./NewGameFormModal";
 
 const GamesComboBox: React.FC = () => {
-  const { games, refetchGames } = useFetchAllGames(); // Add refetchGames function from useFetchAllGames
+  const { games, refetchGames } = useGetAllGames(); // Add refetchGames function from useFetchAllGames
   const [selectedGame, setSelectedGame] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
 

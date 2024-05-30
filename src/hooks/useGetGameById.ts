@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Game } from "../utils/types";
+import api from "../api/api";
 
 export const useGetGameById = () => {
   const [game, setGame] = useState<Game>();
@@ -7,27 +8,25 @@ export const useGetGameById = () => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchGame = async ({ gameId }: { gameId: string | number }) => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `https://gamescoringapi.azurewebsites.net/game/${gameId}`,
-        {
-          headers: {
-            Accept: "*/*",
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      const data: Game = await response.json();
-      setGame(data);
-      setError(null);
-    } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    return await api
+      .GetGameById(gameId)
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`API response Status: ${response.status}`, {
+            cause: response.statusText,
+          });
+        return response.json();
+      })
+      .then((data) => setGame(data))
+      .finally(() => {
+        setLoading(false);
+        setError(null);
+      })
+      .catch((error) => {
+        setError(error);
+        console.error(error);
+      });
   };
 
   return { game, loading, error, fetchGame };

@@ -13,16 +13,15 @@ export const NewMatchForm = ({
   handleMatchAdded: (newGameName: Match) => void;
 }) => {
   const [matchNotes, setMatchNotes] = useState("");
-  const { postData, loading, error } = usePostMatch();
+  const { postMatch, loading, error } = usePostMatch();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const matchData = {
-      gameId,
+      gameId: gameId,
       notes: matchNotes,
-      matchDataPoints: [],
     };
-    const newMatchData = await postData(matchData);
+    const newMatchData = await postMatch(matchData);
     handleMatchAdded(newMatchData);
     handleClose();
   };

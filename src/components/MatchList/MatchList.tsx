@@ -1,26 +1,25 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./matchList.module.scss";
-import GlobalContext from "../../context/globalContext";
 import Card from "../Card/Card";
-import { Match, MatchDataPoints } from "../../utils/types";
+import { MatchDataPoints } from "../../utils/types";
 import Popup from "../Popup/Popup";
 import { NewMatchForm } from "../NewGameForm/NewMatchForm";
-import { MatchScoring } from "../MatchScoring/MatchScoring";
+import { useNavigate, useParams } from "react-router-dom";
+import { Loader } from "../Loader/Loader";
+import { useGetAllMatchesByGameId } from "../../hooks/useGetAllMatchesByGameId";
+import { useGetGameById } from "../../hooks/useGetGameById";
 
-export const MatchList = ({
-  showMatches,
-}: {
-  showMatches: (show: boolean) => void;
-}) => {
-  const {
-    selectedGame,
-    matches,
-    setMatches,
-    setMatchDataPoints,
-    setSelectedMatch,
-  } = useContext(GlobalContext);
+export const MatchList = () => {
+  const { id = 0 } = useParams();
+  const { matches, loading, refetch } = useGetAllMatchesByGameId(id);
+  const { game, fetchGame } = useGetGameById();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showGrid, setShowGrid] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchGame({ gameId: id });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAddNewMatch = () => {
     setShowModal(true);
@@ -29,14 +28,8 @@ export const MatchList = ({
     setShowModal(false);
   };
 
-  const handleMatchAdded = (newlyCreatedGameName: Match) => {
-    // After a new game is added, update the selected game to the newly created game
-    /* setGames([
-      ...games,
-      {
-        ...newlyCreatedGameName,
-      },
-    ]); */ // We also refetch our games.
+  const handleMatchAdded = () => {
+    refetch();
     handleCloseModal(); // Close the modal
   };
 
@@ -59,55 +52,66 @@ export const MatchList = ({
     }));
   };
 
-  return showGrid ? (
-    <MatchScoring showGrid={setShowGrid} />
-  ) : (
+  const handleGotoMatches = (matchId: string | number) => {
+    navigate(`/matches/${id}/scoring/${matchId}`);
+  };
+
+  return (
     <>
-      <button
-        className={styles.returnButton}
-        onClick={() => {
-          setMatches([]);
-          showMatches(false);
-        }}
-      >
-        {"<"}
-      </button>
-      <div className={styles.matchList}>
-        {matches?.map((match) => (
-          <Card
-            key={match.matchId}
-            action={() => {
-              setMatchDataPoints(match.matchDataPoints);
-              setSelectedMatch(match.matchId);
-              setShowGrid(true);
+      <h1 style={{ textAlign: "center" }}>
+        {game !== undefined && game?.gameName}
+      </h1>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <button
+            className={styles.returnButton}
+            onClick={() => {
+              navigate(`/`);
             }}
           >
-            <Card.CardTitle>Match {match.matchId}</Card.CardTitle>
-            {handleMatchData(match.matchDataPoints)?.map((matchDataPoint) => (
-              <Card.PlayerPoints key={matchDataPoint.playerName}>
-                <div>{matchDataPoint.playerName}</div>
-                <div>{matchDataPoint.totalPoints}</div>
-              </Card.PlayerPoints>
-            ))}
-          </Card>
-        ))}
-        <Card action={handleAddNewMatch}>
-          <Card.CardTitle>Add Match</Card.CardTitle>
-          <Card.AddGameButton action={() => {}} />
-        </Card>
-        {showModal && (
-          <Popup handleClose={handleCloseModal}>
-            <Popup.Header>Add New Game</Popup.Header>
-            <Popup.Body>
-              <NewMatchForm
-                gameId={selectedGame}
-                handleClose={handleCloseModal}
-                handleMatchAdded={handleMatchAdded}
-              />
-            </Popup.Body>
-          </Popup>
-        )}
-      </div>
+            {"<"}
+          </button>
+          <div className={styles.matchList}>
+            {matches !== undefined &&
+              matches?.map((match) => (
+                <Card
+                  key={match.matchId}
+                  action={() => {
+                    handleGotoMatches(match?.matchId);
+                  }}
+                >
+                  <Card.CardTitle>Match {match.matchId}</Card.CardTitle>
+                  {handleMatchData(match.matchDataPoints)?.map(
+                    (matchDataPoint) => (
+                      <Card.PlayerPoints key={matchDataPoint.playerName}>
+                        <div>{matchDataPoint.playerName}</div>
+                        <div>{matchDataPoint.totalPoints}</div>
+                      </Card.PlayerPoints>
+                    )
+                  )}
+                </Card>
+              ))}
+            <Card action={handleAddNewMatch}>
+              <Card.CardTitle>Add Match</Card.CardTitle>
+              <Card.AddGameButton action={() => {}} />
+            </Card>
+            {showModal && (
+              <Popup handleClose={handleCloseModal}>
+                <Popup.Header>Add New Game</Popup.Header>
+                <Popup.Body>
+                  <NewMatchForm
+                    gameId={parseInt(id.toString())}
+                    handleClose={handleCloseModal}
+                    handleMatchAdded={handleMatchAdded}
+                  />
+                </Popup.Body>
+              </Popup>
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 };

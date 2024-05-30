@@ -10,11 +10,11 @@ export type MatchDataPoints = {
 };
 
 export type Match = {
-  gameId: number;
+  gameId?: number;
   matchDataPoints: MatchDataPoints[];
-  matchDate: "2024-05-28T21:22:04.5253705";
+  matchDate?: Date;
   matchId: number;
-  notes: null;
+  notes?: string | null;
 };
 
 export interface Game {
@@ -28,3 +28,9 @@ export interface Game {
 }
 
 export type Games = Game & { matches: Match[] }[];
+
+export interface MatchDataRow {
+  playerName: string;
+  gamePoints: number;
+  pointsDescription: string;
+}

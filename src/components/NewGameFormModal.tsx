@@ -11,14 +11,14 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
   onClose,
   onGameAdded,
 }) => {
-  const { postData, loading, error } = usePostGame();
+  const { postGame, loading, error } = usePostGame();
   const [gameName, setGameName] = useState("");
   const [gameDescription, setGameDescription] = useState("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const gameData = { gameName, gameDescription };
-    await postData(gameData);
+    await postGame(gameData);
     onClose();
     onGameAdded(gameName);
   };
