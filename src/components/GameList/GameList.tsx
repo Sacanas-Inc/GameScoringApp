@@ -47,6 +47,7 @@ export const GameList = () => {
             games.map((game, index) => (
               <Card
                 key={game.id}
+                dataTestId={`game-card-${game.id}`}
                 className={cardStyles.card + " " + cardStyles.justify}
                 action={(e) => {
                   handleGotoMatches(game.id);
@@ -62,7 +63,7 @@ export const GameList = () => {
               </Card>
             ))}
 
-          <Card action={handleAddNewGame}>
+          <Card action={handleAddNewGame} dataTestId={`game-card-new-game`}>
             <Card.CardTitle>Add Game</Card.CardTitle>
             <Card.AddGameButton action={() => {}} />
           </Card>

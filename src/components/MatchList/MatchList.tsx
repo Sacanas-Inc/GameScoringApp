@@ -58,7 +58,6 @@ export const MatchList = () => {
       totalPoints,
     }));
   };
-
   const handleGotoMatches = (matchId: string | number) => {
     navigate(`/matches/${id}/scoring/${matchId}`);
   };
@@ -84,6 +83,7 @@ export const MatchList = () => {
               matches?.map((match, index) => (
                 <Card
                   key={match.matchId}
+                  dataTestId={`match-card-${match.matchId}`}
                   action={() => {
                     handleGotoMatches(match?.matchId);
                   }}
@@ -105,7 +105,7 @@ export const MatchList = () => {
                   ></Card.DeleteButton>
                 </Card>
               ))}
-            <Card action={handleAddNewMatch}>
+            <Card action={handleAddNewMatch} dataTestId="add-match">
               <Card.CardTitle>Add Match</Card.CardTitle>
               <Card.AddGameButton action={() => {}} />
             </Card>

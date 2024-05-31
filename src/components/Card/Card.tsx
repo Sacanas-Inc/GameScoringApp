@@ -2,19 +2,20 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { Toast } from "primereact/toast";
 import React, { useRef, useState } from "react";
 import styles from "./card.module.scss";
-import { Portal } from "../Portal/Portal";
 
 const Card = ({
   children,
   className,
+  dataTestId,
   action,
 }: {
   children: React.ReactNode;
+  dataTestId: string;
   className?: string;
   action?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }) => {
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} data-testid={dataTestId}>
       <div className={className ? className : styles.card} onClick={action}>
         {children}
       </div>
@@ -118,34 +119,32 @@ const DeleteButton = ({
 
   return (
     <div>
-      <Portal>
-        <Toast
-          ref={toast}
-          pt={{
-            root: {
-              onClick: (e) => e.stopPropagation(),
-            },
-            closeButton: {
-              onClick: (e) => e.stopPropagation(),
-            },
-          }}
-        />
-        <ConfirmDialog
-          closeOnEscape
-          modal
-          icon="pi pi-exclamation-triangle"
-          tagKey={tagKey}
-          visible={visible}
-          onHide={() => setVisible(false)}
-          message="Are you sure you want to proceed?"
-          header="Confirmation"
-          accept={() => {
-            accept();
-            action();
-          }}
-          reject={() => reject()}
-        />
-      </Portal>
+      <Toast
+        ref={toast}
+        pt={{
+          root: {
+            onClick: (e) => e.stopPropagation(),
+          },
+          closeButton: {
+            onClick: (e) => e.stopPropagation(),
+          },
+        }}
+      />
+      <ConfirmDialog
+        closeOnEscape
+        modal
+        icon="pi pi-exclamation-triangle"
+        tagKey={tagKey}
+        visible={visible}
+        onHide={() => setVisible(false)}
+        message="Are you sure you want to proceed?"
+        header="Confirmation"
+        accept={() => {
+          accept();
+          action();
+        }}
+        reject={() => reject()}
+      />
       <button
         className={styles.deleteButton}
         onClick={(e) => {
