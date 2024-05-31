@@ -58,7 +58,6 @@ export const MatchList = () => {
       totalPoints,
     }));
   };
-  console.log(game?.gameName);
   const handleGotoMatches = (matchId: string | number) => {
     navigate(`/matches/${id}/scoring/${matchId}`);
   };

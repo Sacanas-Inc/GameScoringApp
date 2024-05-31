@@ -1,6 +1,7 @@
+/* eslint-disable testing-library/no-unnecessary-act */
+import { act } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { act } from "react";
 import { MatchList } from "./MatchList";
 
 // Mocking react-router-dom hooks
@@ -42,15 +43,15 @@ test("Loads and displays title", async () => {
   const useParamsMock = require("react-router-dom").useParams;
   useParamsMock.mockReturnValue({ id: "test" });
 
-  await act(async () =>
+  await act(async () => {
     render(
       <MemoryRouter initialEntries={[`/matches/test`]}>
         <Routes>
           <Route path="/matches/:id" element={<MatchList />} />
         </Routes>
       </MemoryRouter>
-    )
-  );
+    );
+  });
 
   // Wait for the element with the text 'Test Game' to appear
   await waitFor(() => {
