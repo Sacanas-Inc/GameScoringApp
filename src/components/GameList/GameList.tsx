@@ -39,7 +39,10 @@ export const GameList = () => {
 
   return (
     <>
-      <h1 style={{ textAlign: "center" }}> Game Scoring App </h1>
+      <h1 style={{ textAlign: "center" }} data-testid="app-title-data-test-id">
+        {" "}
+        Game Scoring App{" "}
+      </h1>
       <div className={styles.contentWrapper}>
         <div className={styles.gameList}>
           {loading && <Loader />}
