@@ -105,7 +105,10 @@ export const MatchList = () => {
                   ></Card.DeleteButton>
                 </Card>
               ))}
-            <Card action={handleAddNewMatch} dataTestId="add-match">
+            <Card
+              action={handleAddNewMatch}
+              dataTestId="add-match-card-test-id"
+            >
               <Card.CardTitle>Add Match</Card.CardTitle>
               <Card.AddGameButton action={() => {}} />
             </Card>
