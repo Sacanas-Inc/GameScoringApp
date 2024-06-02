@@ -35,38 +35,57 @@ jest.mock("../../hooks/useDeleteMatchAndDataPoints", () => ({
   }),
 }));
 
-test("Loads and displays title", async () => {
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={[`/`]}>
-        <Routes>
-          <Route path="/" element={<GameList />} />
-        </Routes>
-      </MemoryRouter>
-    );
+describe("GameList Tests", () => {
+  test("Loads and displays title", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={[`/`]}>
+          <Routes>
+            <Route path="/" element={<GameList />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    });
+
+    // Wait for the element with the text 'Test Game' to appear
+    await waitFor(() => {
+      const headerElement = screen.getByTestId("app-title-data-test-id");
+      expect(headerElement).toBeInTheDocument();
+    });
   });
 
-  // Wait for the element with the text 'Test Game' to appear
-  await waitFor(() => {
-    const headerElement = screen.getByTestId("app-title-data-test-id");
-    expect(headerElement).toBeInTheDocument();
-  });
-});
+  test("Displays a card", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={[`/`]}>
+          <Routes>
+            <Route path="/" element={<GameList />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    });
 
-test("Displays a card", async () => {
-  await act(async () => {
-    render(
-      <MemoryRouter initialEntries={[`/`]}>
-        <Routes>
-          <Route path="/" element={<GameList />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    // Wait for the element with the text 'Test Game' to appear
+    await waitFor(() => {
+      const headerElement = screen.getByTestId(`game-card-1`);
+      expect(headerElement).toBeInTheDocument();
+    });
   });
+  test("Displays add game card", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={[`/`]}>
+          <Routes>
+            <Route path="/" element={<GameList />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    });
 
-  // Wait for the element with the text 'Test Game' to appear
-  await waitFor(() => {
-    const headerElement = screen.getByTestId(`game-card-1`);
-    expect(headerElement).toBeInTheDocument();
+    // Wait for the element with the text 'Test Game' to appear
+    await waitFor(() => {
+      const headerElement = screen.getByTestId(`game-card-add-test-id`);
+      expect(headerElement).toBeInTheDocument();
+    });
   });
 });

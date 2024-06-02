@@ -66,7 +66,7 @@ export const GameList = () => {
               </Card>
             ))}
 
-          <Card action={handleAddNewGame} dataTestId={`game-card-new-game`}>
+          <Card action={handleAddNewGame} dataTestId={`game-card-add-test-id`}>
             <Card.CardTitle>Add Game</Card.CardTitle>
             <Card.AddGameButton action={() => {}} />
           </Card>
