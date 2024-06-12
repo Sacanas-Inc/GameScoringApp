@@ -1,8 +1,9 @@
 .gridContainer {
-  transform: translateX(-50%);
-  position: relative;
-  left: 50%;
-  width: 90%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px;
 }
 
 .grid {
@@ -71,12 +72,9 @@
   margin-left: 10px;
   width: 50%;
   text-align: center;
-  background-color: rgb(215, 215, 215);
   border: 1px solid black;
 
   &:hover {
-    background-color: rgb(180, 180, 180);
-    color: white;
     cursor: pointer;
   }
 }
