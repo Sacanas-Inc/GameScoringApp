@@ -19,3 +19,8 @@ export const SortByGameId = (games: Match[] | undefined): Match[] => {
     return gameIdA.localeCompare(gameIdB);
   });
 };
+
+export const toPascalCase = (str: string) =>
+  (str.toLowerCase().match(/[a-zA-Z0-9]+/g) || [])
+    .map((w: string) => `${w.charAt(0).toUpperCase()}${w.slice(1)}`)
+    .join(" ");

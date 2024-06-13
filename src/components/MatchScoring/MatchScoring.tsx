@@ -10,6 +10,7 @@ import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import { NewScoreForm } from "../NewGameForm/NewScoreForm";
 import { Button } from "react-bootstrap";
+import { toPascalCase } from "../../utils/helpers";
 
 export const MatchScoring = () => {
   const { downloadFileAsCSV } = useDownloadAsCSV();
@@ -59,7 +60,7 @@ export const MatchScoring = () => {
         result.push(player);
       }
       player.score.push({
-        pointsDescription: item.pointsDescription,
+        pointsDescription: toPascalCase(item.pointsDescription),
         points: item.gamePoints,
       });
     });

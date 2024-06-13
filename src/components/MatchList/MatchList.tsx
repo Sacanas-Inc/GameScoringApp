@@ -9,6 +9,7 @@ import { Loader } from "../Loader/Loader";
 import { useGetAllMatchesByGameId } from "../../hooks/useGetAllMatchesByGameId";
 import { useGetGameById } from "../../hooks/useGetGameById";
 import { useDeleteMatchById } from "../../hooks/useDeleteMatchAndDataPoints";
+import { toPascalCase } from "../../utils/helpers";
 
 export const MatchList = () => {
   const { id = 0 } = useParams();
@@ -43,10 +44,10 @@ export const MatchList = () => {
   const handleMatchData = (matchData: MatchDataPoints[]) => {
     const playerPointsMap: { [key: string]: number } = matchData.reduce(
       (acc, current) => {
-        if (acc[current.playerName]) {
-          acc[current.playerName] += current.gamePoints;
+        if (acc[toPascalCase(current.playerName)]) {
+          acc[toPascalCase(current.playerName)] += current.gamePoints;
         } else {
-          acc[current.playerName] = current.gamePoints;
+          acc[toPascalCase(current.playerName)] = current.gamePoints;
         }
         return acc;
       },
