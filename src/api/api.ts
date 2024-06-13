@@ -1,17 +1,20 @@
-import { DeleteGame, GetAllGames, GetGameById, PostGame } from "./Game/GameAPI";
+import {
+  DeleteGame,
+  GetAllGames,
+  GetGameById,
+  PostGame
+} from "@api/Game/GameAPI";
 import {
   GetAllMatches,
   GetAllMatchesByGameId,
   GetMatchById,
   PostMatch,
-  DeleteMatch,
-} from "./Match/MatchAPI";
+  DeleteMatch
+} from "@api/Match/MatchAPI";
 import {
   GetMatchDataPoints,
-  PostMatchDataPoints,
-} from "./MatchDataPoint/MatchDataPointAPI";
-
-export const BASE_URL = "https://gamescoringapi.azurewebsites.net/";
+  PostMatchDataPoints
+} from "@api/MatchDataPoint/MatchDataPointAPI";
 
 const api = {
   GetAllGames,
@@ -24,7 +27,7 @@ const api = {
   PostMatch,
   DeleteMatch,
   GetMatchDataPoints,
-  PostMatchDataPoints,
+  PostMatchDataPoints
 };
 
 export default api;

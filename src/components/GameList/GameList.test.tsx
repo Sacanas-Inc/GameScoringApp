@@ -1,14 +1,13 @@
-/* eslint-disable testing-library/no-unnecessary-act */
 import { act } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { GameList } from "./GameList";
+import { GameList } from "@components/GameList/GameList";
 
 // Mocking react-router-dom hooks
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: jest.fn(),
-  useNavigate: () => jest.fn(),
+  useNavigate: () => jest.fn()
 }));
 
 jest.mock("../../hooks/useGetAllGames", () => ({
@@ -21,18 +20,18 @@ jest.mock("../../hooks/useGetAllGames", () => ({
         minPlayers: 2,
         maxPlayers: 4,
         averageDuration: 60,
-        matches: [],
-      },
+        matches: []
+      }
     ],
     fetchGame: jest.fn(),
-    loading: false,
-  }),
+    loading: false
+  })
 }));
 
 jest.mock("../../hooks/useDeleteMatchAndDataPoints", () => ({
   useDeleteMatchById: () => ({
-    deleteMatch: jest.fn(),
-  }),
+    deleteMatch: jest.fn()
+  })
 }));
 
 describe("GameList Tests", () => {

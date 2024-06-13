@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Match } from "../../utils/types";
-import { usePostMatch } from "../../hooks/usePostMatch";
+import { Match } from "@utils/types";
+import { usePostMatch } from "@hooks/usePostMatch";
 
 export const NewMatchForm = ({
   gameId,
   handleClose,
-  handleMatchAdded,
+  handleMatchAdded
 }: {
   gameId: number;
   handleClose: () => void;
@@ -18,8 +18,8 @@ export const NewMatchForm = ({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const matchData = {
-      gameId: gameId,
-      notes: matchNotes,
+      gameId,
+      notes: matchNotes
     };
     const newMatchData = await postMatch(matchData);
     handleMatchAdded(newMatchData);

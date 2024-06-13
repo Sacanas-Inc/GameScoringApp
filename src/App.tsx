@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { PrimeReactProvider } from "primereact/api";
-import { GameList } from "./components/GameList/GameList";
-import { useGetAllGames } from "./hooks/useGetAllGames";
-import { useContext, useEffect } from "react";
-import GlobalContext from "./context/globalContext";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { MatchList } from "./components/MatchList/MatchList";
-import { MatchScoring } from "./components/MatchScoring/MatchScoring";
+import { GameList } from "@components/GameList/GameList";
+import { useGetAllGames } from "@hooks/useGetAllGames";
+import { MatchList } from "@components/MatchList/MatchList";
+import { MatchScoring } from "@components/MatchScoring/MatchScoring";
+import GlobalContext from "./context/globalContext";
+
 function App() {
   const { games } = useGetAllGames();
 
@@ -14,22 +14,21 @@ function App() {
 
   useEffect(() => {
     setGames(games);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [games]);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <GameList />,
+      element: <GameList />
     },
     {
       path: "/matches/:id",
-      element: <MatchList />,
+      element: <MatchList />
     },
     {
       path: "/matches/:id/scoring/:matchId",
-      element: <MatchScoring />,
-    },
+      element: <MatchScoring />
+    }
   ]);
   return (
     <React.StrictMode>
@@ -40,23 +39,23 @@ function App() {
           pt: {
             confirmdialog: {
               root: {
-                onClick: (e) => e.stopPropagation(),
+                onClick: (e) => e.stopPropagation()
               },
               closeButton: {
-                onClick: (e: any) => e.stopPropagation(),
+                onClick: (e) => e.stopPropagation()
               },
               acceptButton: {
-                root: { onClick: (e) => e.stopPropagation() },
+                root: { onClick: (e) => e.stopPropagation() }
               },
               rejectButton: {
-                root: { onClick: (e) => e.stopPropagation() },
-              },
+                root: { onClick: (e) => e.stopPropagation() }
+              }
             },
             dialog: {
               mask: { onClick: (e) => e.stopPropagation() },
-              root: { onClick: (e) => e.stopPropagation() },
-            },
-          },
+              root: { onClick: (e) => e.stopPropagation() }
+            }
+          }
         }}
       >
         <RouterProvider router={router} />

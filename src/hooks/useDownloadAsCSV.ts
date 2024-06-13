@@ -1,4 +1,4 @@
-import { MatchDataPoints } from "../utils/types";
+import { MatchDataPoints } from "@utils/types";
 
 export const useDownloadAsCSV = () => {
   const downloadFileAsCSV = (filteredGames: MatchDataPoints[] | undefined) => {
@@ -7,11 +7,11 @@ export const useDownloadAsCSV = () => {
       "Player",
       "Game Name",
       "Game Points",
-      "Points Description",
+      "Points Description"
     ];
 
     if (filteredGames === undefined) return;
-    const header = csvHeaders.join(",") + "\n";
+    const header = `${csvHeaders.join(",")}\n`;
     const rows = Object.values(filteredGames)
       .map(
         (game) =>

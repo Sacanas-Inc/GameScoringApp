@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Match } from "../utils/types";
-import api from "../api/api";
+import { Match } from "@utils/types";
+import api from "@api/api";
 
 export const useGetMatchGames = () => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -9,12 +9,12 @@ export const useGetMatchGames = () => {
 
   const getData = async () => {
     setLoading(true);
-    return await api
+    return api
       .GetAllMatches()
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText,
+            cause: response.statusText
           });
         try {
           return response.json();
@@ -28,9 +28,9 @@ export const useGetMatchGames = () => {
         setLoading(false);
         setError(null);
       })
-      .catch((error) => {
-        setError(error);
-        console.error(error);
+      .catch((err) => {
+        setError(err);
+        console.error(err);
       });
   };
 
@@ -42,6 +42,6 @@ export const useGetMatchGames = () => {
     loading,
     error,
     matches,
-    getData,
+    getData
   };
 };

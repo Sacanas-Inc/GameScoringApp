@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
+index e465d8e..876ab90 100644
+--- a/node_modules/react-scripts/config/webpack.config.js
++++ b/node_modules/react-scripts/config/webpack.config.js
+@@ -7,7 +7,7 @@
+  */
+ // @remove-on-eject-end
+ 'use strict';
+-
++const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+ const fs = require('fs');
+ const path = require('path');
+ const webpack = require('webpack');
+@@ -344,6 +344,7 @@ module.exports = function (webpackEnv) {
+           babelRuntimeEntryHelpers,
+           babelRuntimeRegenerator,
+         ]),
++        new TsconfigPathsPlugin(),
+       ],
+     },
+     module: {

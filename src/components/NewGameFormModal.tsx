@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap"; // Import Bootstrap components
-import { usePostGame } from "../hooks/usePostGame";
+import { usePostGame } from "@hooks/usePostGame";
 
 interface NewGameFormModalProps {
   onClose: () => void;
@@ -9,7 +9,7 @@ interface NewGameFormModalProps {
 
 const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
   onClose,
-  onGameAdded,
+  onGameAdded
 }) => {
   const { postGame, loading, error } = usePostGame();
   const [gameName, setGameName] = useState("");
@@ -33,7 +33,7 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
   };
 
   return (
-    <Modal show={true} onHide={onClose}>
+    <Modal show onHide={onClose}>
       <Modal.Header closeButton>
         <Modal.Title>Enter Game Name</Modal.Title>
       </Modal.Header>

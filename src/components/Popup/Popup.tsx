@@ -7,23 +7,17 @@ const Popup = ({
 }: {
   children: React.ReactNode;
   handleClose: () => void;
-}) => {
-  return (
-    <Modal show={true} onHide={handleClose}>
+}) => (
+    <Modal show onHide={handleClose}>
       {children}
     </Modal>
   );
-};
 
-Popup.Header = ({ children }: { children: React.ReactNode }) => {
-  return (
+Popup.Header = ({ children }: { children: React.ReactNode }) => (
     <Modal.Header closeButton>
       <Modal.Title>{children}</Modal.Title>
     </Modal.Header>
   );
-};
 
-Popup.Body = ({ children }: { children: React.ReactNode }) => {
-  return <Modal.Body>{children}</Modal.Body>;
-};
+Popup.Body = ({ children }: { children: React.ReactNode }) => <Modal.Body>{children}</Modal.Body>;
 export default Popup;

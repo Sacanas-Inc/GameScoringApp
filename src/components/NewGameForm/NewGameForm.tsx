@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { usePostGame } from "../../hooks/usePostGame";
-import { Game } from "../../utils/types";
+import { usePostGame } from "@hooks/usePostGame";
+import { Game } from "@utils/types";
 
 export const NewGameForm = ({
   handleClose,
-  handleGameAdded,
+  handleGameAdded
 }: {
   handleClose: () => void;
   handleGameAdded: (newGameName: Game) => void;

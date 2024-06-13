@@ -1,10 +1,10 @@
 import { ReactNode, useState } from "react";
-import { Game, Match, MatchDataPoints } from "../utils/types";
+import { Game, Match, MatchDataPoints } from "@utils/types";
 import GlobalContext from "./globalContext";
 
 // Define the provider component
 export const GlobalContextProvider = ({
-  children,
+  children
 }: {
   children: ReactNode;
 }) => {
@@ -16,6 +16,7 @@ export const GlobalContextProvider = ({
 
   return (
     <GlobalContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
         games,
         matches,
@@ -26,7 +27,7 @@ export const GlobalContextProvider = ({
         setMatchDataPoints,
         setGames,
         setSelectedGame,
-        setSelectedMatch,
+        setSelectedMatch
       }}
     >
       {children}

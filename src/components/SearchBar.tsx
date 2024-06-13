@@ -4,8 +4,7 @@ export const SearchBar = ({
   handleSearch,
 }: {
   handleSearch: (search: string) => void;
-}) => {
-  return (
+}) => (
     <input
       className={styles.searchBar}
       type="search"
@@ -13,4 +12,3 @@ export const SearchBar = ({
       placeholder="Search for game"
     />
   );
-};
