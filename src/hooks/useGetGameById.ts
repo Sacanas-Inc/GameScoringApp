@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Game } from "../utils/types";
-import api from "../api/api";
+import api from "@api/api";
+import { Game } from "@utils/types";
 
 export const useGetGameById = () => {
   const [game, setGame] = useState<Game>();
@@ -9,12 +9,12 @@ export const useGetGameById = () => {
 
   const fetchGame = async ({ gameId }: { gameId: string | number }) => {
     setLoading(true);
-    return await api
+    return api
       .GetGameById(gameId)
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText,
+            cause: response.statusText
           });
         return response.json();
       })
@@ -23,9 +23,9 @@ export const useGetGameById = () => {
         setLoading(false);
         setError(null);
       })
-      .catch((error) => {
-        setError(error);
-        console.error(error);
+      .catch((err) => {
+        setError(err);
+        console.error(err);
         setGame({} as Game);
       });
   };

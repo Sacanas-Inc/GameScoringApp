@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "../Card/Card";
-import { Game } from "../../utils/types";
-import { useDeleteGameById } from "../../hooks/useDeleteGameById";
-import styles from "./gameList.module.scss";
-import cardStyles from "../Card/card.module.scss";
-import { NewGameForm } from "../NewGameForm/NewGameForm";
-import Popup from "../Popup/Popup";
-import { useGetAllGames } from "../../hooks/useGetAllGames";
-import { Loader } from "../Loader/Loader";
+import Card from "@components/Card/Card";
+import { useDeleteGameById } from "@hooks/useDeleteGameById";
+import cardStyles from "@components/Card/card.module.scss";
+import { NewGameForm } from "@components/NewGameForm/NewGameForm";
+import Popup from "@components/Popup/Popup";
+import { useGetAllGames } from "@hooks/useGetAllGames";
+import { Loader } from "@components/Loader/Loader";
+import styles from "@components/GameList/gameList.module.scss";
 
 export const GameList = () => {
   const { deleteGame } = useDeleteGameById();
@@ -22,14 +21,14 @@ export const GameList = () => {
     setShowModal(false);
   };
 
-  const handleGameAdded = (newlyCreatedGameName: Game) => {
+  const handleGameAdded = () => {
     // After a new game is added, update the selected game to the newly created game
     refetchGames(); // We also refetch our games.
     handleCloseModal(); // Close the modal
   };
 
   const handleDelete = async ({ gameId }: { gameId: number }) => {
-    await deleteGame({ gameId: gameId });
+    await deleteGame({ gameId });
     refetchGames(); // We also refetch our games.
   };
 
@@ -50,8 +49,8 @@ export const GameList = () => {
               <Card
                 key={game.id}
                 dataTestId={`game-card-${game.id}`}
-                className={cardStyles.card + " " + cardStyles.justify}
-                action={(e) => {
+                className={`${cardStyles.card} ${cardStyles.justify}`}
+                action={() => {
                   handleGotoMatches(game.id);
                 }}
               >
@@ -61,13 +60,17 @@ export const GameList = () => {
                   action={() => {
                     handleDelete({ gameId: game.id });
                   }}
-                ></Card.DeleteButton>
+                />
               </Card>
             ))}
 
-          <Card action={handleAddNewGame} dataTestId={`game-card-add-test-id`}>
+          <Card action={handleAddNewGame} dataTestId="game-card-add-test-id">
             <Card.CardTitle>Add Game</Card.CardTitle>
-            <Card.AddGameButton action={() => {}} />
+            <Card.AddGameButton
+              action={() => {
+                console.warn("Not implemented yet!");
+              }}
+            />
           </Card>
           {showModal && (
             <Popup handleClose={handleCloseModal}>

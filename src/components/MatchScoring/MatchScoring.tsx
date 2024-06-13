@@ -1,16 +1,16 @@
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Match, MatchDataPoints } from "@utils/types";
+import { toPascalCase } from "@utils/helpers";
 import styles from "../../styles/grid-styles.module.scss";
 import { useDownloadAsCSV } from "../../hooks/useDownloadAsCSV";
-import { useNavigate, useParams } from "react-router-dom";
 import { useGetMatchById } from "../../hooks/useGetMatchById";
-import { useEffect, useState } from "react";
 import { Loader } from "../Loader/Loader";
-import { Match, MatchDataPoints } from "../../utils/types";
 import { useGetGameById } from "../../hooks/useGetGameById";
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
 import { NewScoreForm } from "../NewGameForm/NewScoreForm";
-import { Button } from "react-bootstrap";
-import { toPascalCase } from "../../utils/helpers";
 
 export const MatchScoring = () => {
   const { downloadFileAsCSV } = useDownloadAsCSV();
@@ -27,7 +27,6 @@ export const MatchScoring = () => {
       setMatch(response);
     });
     fetchGame({ gameId: id });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddNewMatch = () => {
@@ -55,13 +54,13 @@ export const MatchScoring = () => {
       if (!player) {
         player = {
           playerName: item.playerName,
-          score: [],
+          score: []
         };
         result.push(player);
       }
       player.score.push({
         pointsDescription: toPascalCase(item.pointsDescription),
-        points: item.gamePoints,
+        points: item.gamePoints
       });
     });
 
@@ -78,6 +77,7 @@ export const MatchScoring = () => {
       ) : (
         <>
           <button
+            type="button"
             className={styles.returnButton}
             onClick={() => {
               navigate(`/matches/${id}`);
@@ -87,25 +87,29 @@ export const MatchScoring = () => {
           </button>
           <div className={styles.gridContainer}>
             {match?.matchDataPoints?.length > 0 &&
-              handleScoreData(match?.matchDataPoints)?.map((player, index) => (
+              handleScoreData(match?.matchDataPoints)?.map((player) => (
                 <Card
-                  key={match.matchId}
+                  key={player.playerName.toLowerCase()}
                   dataTestId={`score-card-${match.matchId}`}
-                  action={() => {}}
+                  action={() => {
+                    console.warn("Not implemented yet");
+                  }}
                 >
                   <Card.CardTitle>{player.playerName}</Card.CardTitle>
-                  {player.score.map((score, index) => (
-                    <Card.PlayerPoints key={index}>
+                  {player.score.map((score) => (
+                    <Card.PlayerPoints
+                      key={`card-${score.pointsDescription.toLowerCase()}`}
+                    >
                       <div>{score.pointsDescription}</div>
                       <div>{score.points}</div>
                     </Card.PlayerPoints>
                   ))}
                   <Card.DeleteButton
-                    tagKey={`delete-${match.matchId}-${index}`}
+                    tagKey={`delete-${player.playerName.toLowerCase()}`}
                     action={() => {
-                      //handleDelete({ matchId: match.matchId });
+                      // handleDelete({ matchId: match.matchId });
                     }}
-                  ></Card.DeleteButton>
+                  />
                 </Card>
               ))}
             <Card
@@ -113,7 +117,11 @@ export const MatchScoring = () => {
               dataTestId="add-score-card-test-id"
             >
               <Card.CardTitle>Add Score</Card.CardTitle>
-              <Card.AddGameButton action={() => {}} />
+              <Card.AddGameButton
+                action={() => {
+                  console.warn("Not implemented yet!");
+                }}
+              />
             </Card>
             {showModal && (
               <Popup handleClose={handleCloseModal}>

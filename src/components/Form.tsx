@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { MatchDataRow } from "../utils/types";
-import styles from "../styles/grid-styles.module.scss";
-import { usePostMatchDataPoints } from "../hooks/usePostMatchDataPoints";
 import { useParams } from "react-router-dom";
+import { usePostMatchDataPoints } from "@hooks/usePostMatchDataPoints";
+import { MatchDataRow } from "@utils/types";
+import styles from "../styles/grid-styles.module.scss";
 
 const initialFormState = {
   playerName: "",
   gamePoints: 0,
-  pointsDescription: "",
+  pointsDescription: ""
 };
 
 export const Form = ({ refetch }: { refetch: () => void }) => {
@@ -15,22 +15,24 @@ export const Form = ({ refetch }: { refetch: () => void }) => {
 
   const { matchId = 0 } = useParams();
   const [newGameData, setNewGameData] = useState<MatchDataRow>({
-    ...initialFormState,
+    ...initialFormState
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChangeInput = (e: any) => {
     const { name, value } = e.target;
     const newObject = { [name]: value };
     setNewGameData({ ...newGameData, ...newObject });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const prepareObjectForPosting = async (e: any) => {
     e.preventDefault();
 
     await postData(newGameData, matchId);
 
     setNewGameData({
-      ...initialFormState,
+      ...initialFormState
     });
     refetch();
   };

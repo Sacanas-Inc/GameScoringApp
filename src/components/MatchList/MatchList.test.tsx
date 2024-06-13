@@ -1,14 +1,15 @@
-/* eslint-disable testing-library/no-unnecessary-act */
+/* eslint-disable global-require */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { act } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { MatchList } from "./MatchList";
+import { MatchList } from "@components/MatchList/MatchList";
 
 // Mocking react-router-dom hooks
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: jest.fn(),
-  useNavigate: () => jest.fn(),
+  useNavigate: () => jest.fn()
 }));
 
 // Mocking custom hooks
@@ -17,25 +18,25 @@ jest.mock("../../hooks/useGetAllMatchesByGameId", () => ({
     matches: [
       {
         matchId: 1,
-        matchDataPoints: [{ playerName: "Player1", gamePoints: 10 }],
-      },
+        matchDataPoints: [{ playerName: "Player1", gamePoints: 10 }]
+      }
     ],
     loading: false,
-    refetch: jest.fn(),
-  }),
+    refetch: jest.fn()
+  })
 }));
 
 jest.mock("../../hooks/useGetGameById", () => ({
   useGetGameById: () => ({
     game: { gameName: "Test Game" },
-    fetchGame: jest.fn(),
-  }),
+    fetchGame: jest.fn()
+  })
 }));
 
 jest.mock("../../hooks/useDeleteMatchAndDataPoints", () => ({
   useDeleteMatchById: () => ({
-    deleteMatch: jest.fn(),
-  }),
+    deleteMatch: jest.fn()
+  })
 }));
 
 describe("MatchList Tests", () => {

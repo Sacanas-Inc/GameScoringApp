@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { createContext } from "react";
-import { Game, Match, MatchDataPoints } from "../utils/types";
+import { Game, Match, MatchDataPoints } from "@utils/types";
 
 // Define the shape of the context data
 interface GlobalContextProps {
@@ -26,8 +27,8 @@ const GlobalContext = createContext<GlobalContextProps>({
       gamePoints: 0,
       matchId: -1,
       playerName: "",
-      pointsDescription: "",
-    },
+      pointsDescription: ""
+    }
   ],
   selectedGame: -1,
   selectedMatch: -1,
@@ -35,7 +36,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   setMatches: () => {},
   setMatchDataPoints: () => {},
   setSelectedGame: () => {},
-  setSelectedMatch: () => {},
+  setSelectedMatch: () => {}
 });
 
 // Export the context for use in other components

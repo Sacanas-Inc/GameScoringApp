@@ -1,13 +1,15 @@
-import { Match } from "./types";
+import { Match } from "@utils/types";
 
 export const SortByGameId = (games: Match[] | undefined): Match[] => {
   if (!games) {
+    // eslint-disable-next-line no-console
     console.warn("No games provided for sorting.");
     return [];
   }
 
   return [...games].sort((a, b) => {
     if (!a.gameId || !b.gameId) {
+      // eslint-disable-next-line no-console
       console.error("Undefined gameId in:", a, b);
       return 0; // Handle undefined values appropriately
     }

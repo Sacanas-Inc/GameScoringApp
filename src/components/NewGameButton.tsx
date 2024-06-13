@@ -5,12 +5,10 @@ interface NewGameButtonProps {
   onClick: () => void;
 }
 
-const NewGameButton: React.FC<NewGameButtonProps> = ({ onClick }) => {
-  return (
-    <button className="rectangular-button" onClick={onClick}>
-      Add Game
-    </button>
-  );
-};
+const NewGameButton: React.FC<NewGameButtonProps> = ({ onClick }) => (
+  <button type="button" className="rectangular-button" onClick={onClick}>
+    Add Game
+  </button>
+);
 
 export default NewGameButton;

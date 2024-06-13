@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from "react";
-import { useGetAllGames } from "../hooks/useGetAllGames";
-import { Game } from "../utils/types";
+import { useGetAllGames } from "@hooks/useGetAllGames";
+import { Game } from "@utils/types";
 import "../styles/games-combobox-styles.scss"; // Import the SCSS file
-import NewGameButton from "./NewGameButton";
-import NewGameFormModal from "./NewGameFormModal";
+import NewGameButton from "@components/NewGameButton";
+import NewGameFormModal from "@components/NewGameFormModal";
 
 const GamesComboBox: React.FC = () => {
   const { games, refetchGames } = useGetAllGames(); // Add refetchGames function from useFetchAllGames

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import styles from "./matchList.module.scss";
-import Card from "../Card/Card";
-import { MatchDataPoints } from "../../utils/types";
-import Popup from "../Popup/Popup";
-import { NewMatchForm } from "../NewGameForm/NewMatchForm";
 import { useNavigate, useParams } from "react-router-dom";
-import { Loader } from "../Loader/Loader";
-import { useGetAllMatchesByGameId } from "../../hooks/useGetAllMatchesByGameId";
-import { useGetGameById } from "../../hooks/useGetGameById";
-import { useDeleteMatchById } from "../../hooks/useDeleteMatchAndDataPoints";
-import { toPascalCase } from "../../utils/helpers";
+import styles from "@components/MatchList/matchList.module.scss";
+import Card from "@components/Card/Card";
+import { MatchDataPoints } from "@utils/types";
+import Popup from "@components/Popup/Popup";
+import { NewMatchForm } from "@components/NewGameForm/NewMatchForm";
+import { Loader } from "@components/Loader/Loader";
+import { useGetAllMatchesByGameId } from "@hooks/useGetAllMatchesByGameId";
+import { useGetGameById } from "@hooks/useGetGameById";
+import { useDeleteMatchById } from "@hooks/useDeleteMatchAndDataPoints";
+import { toPascalCase } from "@utils/helpers";
 
 export const MatchList = () => {
   const { id = 0 } = useParams();
@@ -21,7 +21,6 @@ export const MatchList = () => {
 
   useEffect(() => {
     fetchGame({ gameId: id });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddNewMatch = () => {
@@ -32,7 +31,7 @@ export const MatchList = () => {
   };
 
   const handleDelete = async ({ matchId }: { matchId: number }) => {
-    await deleteMatch({ matchId: matchId });
+    await deleteMatch({ matchId });
     refetch();
   };
 
@@ -56,7 +55,7 @@ export const MatchList = () => {
 
     return Object.entries(playerPointsMap).map(([playerName, totalPoints]) => ({
       playerName,
-      totalPoints,
+      totalPoints
     }));
   };
   const handleGotoMatches = (matchId: string | number) => {
@@ -72,6 +71,7 @@ export const MatchList = () => {
       ) : (
         <>
           <button
+            type="button"
             className={styles.returnButton}
             onClick={() => {
               navigate(`/`);
@@ -103,7 +103,7 @@ export const MatchList = () => {
                     action={() => {
                       handleDelete({ matchId: match.matchId });
                     }}
-                  ></Card.DeleteButton>
+                  />
                 </Card>
               ))}
             <Card
@@ -111,14 +111,18 @@ export const MatchList = () => {
               dataTestId="add-match-card-test-id"
             >
               <Card.CardTitle>Add Match</Card.CardTitle>
-              <Card.AddGameButton action={() => {}} />
+              <Card.AddGameButton
+                action={() => {
+                  console.warn("Not implemented!");
+                }}
+              />
             </Card>
             {showModal && (
               <Popup handleClose={handleCloseModal}>
                 <Popup.Header>Add New Game</Popup.Header>
                 <Popup.Body>
                   <NewMatchForm
-                    gameId={parseInt(id.toString())}
+                    gameId={parseInt(id.toString(), 10)}
                     handleClose={handleCloseModal}
                     handleMatchAdded={handleMatchAdded}
                   />

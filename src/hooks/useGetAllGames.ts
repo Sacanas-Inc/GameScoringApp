@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Game } from "../utils/types";
-import api from "../api/api";
+import api from "@api/api";
+import { Game } from "@utils/types";
 
 export const useGetAllGames = () => {
   const [games, setGames] = useState<Game[]>([]);
@@ -9,7 +9,7 @@ export const useGetAllGames = () => {
 
   const fetchGames = async () => {
     setLoading(true);
-    return await api
+    return api
       .GetAllGames()
       .then((response) => {
         if (!response.ok) return [];
@@ -20,9 +20,9 @@ export const useGetAllGames = () => {
         setLoading(false);
         setError(null);
       })
-      .catch((error) => {
-        setError(error);
-        console.error(error);
+      .catch((err) => {
+        setError(err);
+        console.error(err);
       });
   };
 

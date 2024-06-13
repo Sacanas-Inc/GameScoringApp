@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "../api/api";
-import { MatchDataRow } from "../utils/types";
+import api from "@api/api";
+import { MatchDataRow } from "@utils/types";
 
 export const usePostMatchDataPoints = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -11,12 +11,12 @@ export const usePostMatchDataPoints = () => {
     matchId: string | number
   ) => {
     setLoading(true);
-    return await api
+    return api
       .PostMatchDataPoints(matchId, JSON.stringify(matchDataPoints))
       .then((response) => {
         if (!response.ok)
           throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText,
+            cause: response.statusText
           });
         return response.json();
       })
@@ -24,9 +24,9 @@ export const usePostMatchDataPoints = () => {
         setLoading(false);
         setError(null);
       })
-      .catch((error) => {
-        setError(error);
-        console.error(error);
+      .catch((err) => {
+        setError(err);
+        console.error(err);
       });
   };
 

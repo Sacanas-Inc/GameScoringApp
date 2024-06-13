@@ -1,4 +1,3 @@
-/* eslint-disable testing-library/no-unnecessary-act */
 import { act } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -8,13 +7,13 @@ import { MatchScoring } from "./MatchScoring";
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: () => ({ id: 1, matchId: 3 }),
-  useNavigate: () => jest.fn(),
+  useNavigate: () => jest.fn()
 }));
 
 jest.mock("../../hooks/useDownloadAsCSV", () => ({
   useDownloadAsCSV: () => ({
-    downloadFileAsCSV: jest.fn(),
-  }),
+    downloadFileAsCSV: jest.fn()
+  })
 }));
 
 jest.mock("../../hooks/useGetGameById", () => ({
@@ -26,11 +25,11 @@ jest.mock("../../hooks/useGetGameById", () => ({
       minPlayers: 2,
       maxPlayers: 4,
       averageDuration: 60,
-      matches: [],
+      matches: []
     },
     fetchGame: jest.fn(),
-    loading: false,
-  }),
+    loading: false
+  })
 }));
 
 jest.mock("../../hooks/useGetMatchById", () => ({
@@ -45,15 +44,15 @@ jest.mock("../../hooks/useGetMatchById", () => ({
             matchId: 3,
             playerName: "Miguel",
             gamePoints: 12,
-            pointsDescription: "Bustos",
-          },
+            pointsDescription: "Bustos"
+          }
         ],
         matchDate: new Date(),
         matchId: 3,
-        notes: "",
+        notes: ""
       }),
-    loading: false,
-  }),
+    loading: false
+  })
 }));
 
 describe("MatchScoring Tests", () => {

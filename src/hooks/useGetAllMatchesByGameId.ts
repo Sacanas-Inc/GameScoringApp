@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Match } from "../utils/types";
-import api from "../api/api";
+import api from "@api/api";
+import { Match } from "@utils/types";
 
 export const useGetAllMatchesByGameId = (gameId?: string | number) => {
   const [matches, setMatches] = useState<Match[]>([]);
@@ -9,7 +9,7 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
 
   const getData = async () => {
     setLoading(true);
-    return await api
+    return api
       .GetAllMatchesByGameId(gameId)
       .then((response) => {
         if (!response.ok) return [];
@@ -21,9 +21,9 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
         setLoading(false);
         setError(null);
       })
-      .catch((error) => {
-        setError(error);
-        //console.error(error);
+      .catch((err) => {
+        setError(err);
+        console.error(err);
       });
   };
 
@@ -32,7 +32,6 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
   };
   useEffect(() => {
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
@@ -40,6 +39,6 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
     error,
     matches,
     getData,
-    refetch,
+    refetch
   };
 };

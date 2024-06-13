@@ -20,7 +20,7 @@ export type Match = {
 export interface Game {
   id: number;
   gameName: string;
-  gameDescription: any;
+  gameDescription: string;
   minPlayers: number;
   maxPlayers: number;
   averageDuration: number;
