@@ -1,38 +1,26 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 import api from "@api/api";
 import { Game } from "@utils/types";
+import { queryKeys } from "@api/queryKeys";
+import GlobalContext from "src/context/globalContext";
+import { useContext } from "react";
 
 export const useGetAllGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { setGames } = useContext(GlobalContext);
+  const { data, isLoading, error, refetch } = useQuery<Game[]>({
+    queryKey: queryKeys.games,
+    queryFn: async () => {
+      const response = await api.GetAllGames();
+      return response.data ?? [];
+    },onSuccess: (games) => {
+      setGames(games);
+    }
+  });
 
-  const fetchGames = async () => {
-    setLoading(true);
-    return api
-      .GetAllGames()
-      .then((response) => {
-        if (!response.ok) return [];
-        return response.json();
-      })
-      .then((data) => setGames(data))
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error(err);
-      });
+  return {
+    games: data ?? [],
+    loading: isLoading,
+    error: error ? String(error) : null,
+    refetchGames: refetch
   };
-
-  useEffect(() => {
-    fetchGames();
-  }, []);
-
-  const refetchGames = () => {
-    fetchGames(); // Manually trigger data fetch
-  };
-
-  return { games, loading, error, refetchGames };
 };

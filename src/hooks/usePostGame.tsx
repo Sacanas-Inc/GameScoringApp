@@ -1,37 +1,43 @@
 // hooks/usePostGame.ts
-import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import api from "@api/api";
+import { queryKeys } from "@api/queryKeys";
 
-// Define the type for game data
-interface GameData {
+export interface GameData {
   gameName: string;
   gameDescription: string;
 }
 
 export const usePostGame = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (gameData: GameData) => {
+      const response = await api.PostGame(gameData);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`API response Status: ${response.status}`, {
+          cause: response.statusText
+        });
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.games });
+    }
+  });
 
   const postGame = async (gameData: GameData) => {
-    setLoading(true);
-    return api
-      .PostGame(gameData)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText
-          });
-        return response.json();
-      })
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error(err);
-      });
+    try {
+      return await mutation.mutateAsync(gameData);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      return undefined;
+    }
   };
 
-  return { postGame, loading, error };
+  return {
+    postGame,
+    loading: mutation.isPending,
+    error: mutation.error ? String(mutation.error) : null
+  };
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@components/Card/Card";
 import { useDeleteGameById } from "@hooks/useDeleteGameById";
@@ -8,15 +8,20 @@ import Popup from "@components/Popup/Popup";
 import { useGetAllGames } from "@hooks/useGetAllGames";
 import { Loader } from "@components/Loader/Loader";
 import styles from "@components/GameList/gameList.module.scss";
+import GlobalContext from "../../context/globalContext";
 
 export const GameList = () => {
-  const { deleteGame } = useDeleteGameById();
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const { games, refetchGames, loading } = useGetAllGames();
+
   const navigate = useNavigate();
+  const { deleteGame } = useDeleteGameById();
+  const { refetchGames, loading } = useGetAllGames();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const { games } = useContext(GlobalContext);
+ 
   const handleAddNewGame = () => {
     setShowModal(true);
   };
+ 
   const handleCloseModal = () => {
     setShowModal(false);
   };

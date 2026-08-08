@@ -1,34 +1,53 @@
-import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import api from "@api/api";
 import { MatchDataRow } from "@utils/types";
+import { queryKeys } from "@api/queryKeys";
 
 export const usePostMatchDataPoints = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async ({
+      matchDataPoints,
+      matchId
+    }: {
+      matchDataPoints: MatchDataRow;
+      matchId: string | number;
+    }) => {
+      const response = await api.PostMatchDataPoints(matchId, matchDataPoints);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`API response Status: ${response.status}`, {
+          cause: response.statusText
+        });
+      }
+      return response.data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.match(variables.matchId)
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.matchDataPoints(variables.matchId)
+      });
+      queryClient.invalidateQueries({ queryKey: queryKeys.matches });
+    }
+  });
 
   const postData = async (
     matchDataPoints: MatchDataRow,
     matchId: string | number
   ) => {
-    setLoading(true);
-    return api
-      .PostMatchDataPoints(matchId, JSON.stringify(matchDataPoints))
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText
-          });
-        return response.json();
-      })
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error(err);
-      });
+    try {
+      return await mutation.mutateAsync({ matchDataPoints, matchId });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      return undefined;
+    }
   };
 
-  return { postData, loading, error };
+  return {
+    postData,
+    loading: mutation.isPending,
+    error: mutation.error ? String(mutation.error) : null
+  };
 };

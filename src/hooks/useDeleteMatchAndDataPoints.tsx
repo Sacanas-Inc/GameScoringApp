@@ -1,28 +1,37 @@
-import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import api from "@api/api";
+import { queryKeys } from "@api/queryKeys";
 
 export const useDeleteMatchById = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async ({ matchId }: { matchId: string | number }) => {
+      const response = await api.DeleteMatch(matchId);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`API response Status: ${response.status}`, {
+          cause: response.statusText
+        });
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.matches });
+    }
+  });
+
   const deleteMatch = async ({ matchId }: { matchId: string | number }) => {
-    setLoading(true);
-    return api
-      .DeleteMatch(matchId)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText
-          });
-      })
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error(err);
-      });
+    try {
+      return await mutation.mutateAsync({ matchId });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      return undefined;
+    }
   };
 
-  return { loading, error, deleteMatch };
+  return {
+    deleteMatch,
+    loading: mutation.isLoading,
+    error: mutation.error ? String(mutation.error) : null
+  };
 };

@@ -1,47 +1,25 @@
-import { useEffect, useState } from "react";
-import { Match } from "@utils/types";
+import { useQuery } from "react-query";
 import api from "@api/api";
+import { Match } from "@utils/types";
+import { queryKeys } from "@api/queryKeys";
 
 export const useGetMatchGames = () => {
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error, refetch } = useQuery<Match[]>({
+    queryKey: queryKeys.matches,
+    queryFn: async () => {
+      const response = await api.GetAllMatches();
+      return response.data ?? [];
+    }
+  });
 
   const getData = async () => {
-    setLoading(true);
-    return api
-      .GetAllMatches()
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText
-          });
-        try {
-          return response.json();
-        } catch (err) {
-          setMatches([]);
-          throw err;
-        }
-      })
-      .then((data) => setMatches(data))
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error(err);
-      });
+    await refetch();
   };
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   return {
-    loading,
-    error,
-    matches,
+    loading: isLoading,
+    error: error ? String(error) : null,
+    matches: data ?? [],
     getData
   };
 };
