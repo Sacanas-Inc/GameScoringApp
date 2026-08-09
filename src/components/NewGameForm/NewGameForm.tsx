@@ -3,6 +3,10 @@ import { Button, Form } from "react-bootstrap";
 import { usePostGame } from "@hooks/usePostGame";
 import { Game } from "@utils/types";
 
+interface FormErrors {
+  gameName?: string;
+}
+
 export const NewGameForm = ({
   handleClose,
   handleGameAdded
@@ -12,10 +16,24 @@ export const NewGameForm = ({
 }) => {
   const [gameName, setGameName] = useState("");
   const [gameDescription, setGameDescription] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
   const { postGame, loading, error } = usePostGame();
+
+  const validate = (): FormErrors => {
+    const newErrors: FormErrors = {};
+    if (!gameName.trim()) {
+      newErrors.gameName = "Game Name is required";
+    }
+    return newErrors;
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     const gameData = { gameName, gameDescription };
     const newGameData = await postGame(gameData);
     handleGameAdded(newGameData);
@@ -26,13 +44,14 @@ export const NewGameForm = ({
     const { name, value } = event.target;
     if (name === "gameName") {
       setGameName(value);
+      setErrors((prev) => ({ ...prev, gameName: undefined }));
     } else if (name === "gameDescription") {
       setGameDescription(value);
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <Form.Group controlId="formGameName">
         <Form.Label>Game Name:</Form.Label>
         <Form.Control
@@ -41,7 +60,11 @@ export const NewGameForm = ({
           name="gameName"
           value={gameName}
           onChange={handleInputChange}
+          isInvalid={!!errors.gameName}
         />
+        <Form.Control.Feedback type="invalid">
+          {errors.gameName}
+        </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId="formGameDescription">
         <Form.Label>Game Description (optional):</Form.Label>

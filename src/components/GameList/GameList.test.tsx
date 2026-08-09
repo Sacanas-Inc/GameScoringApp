@@ -2,8 +2,8 @@ import { act } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { GameList } from "@components/GameList/GameList";
-import GlobalContext from "../../context/globalContext";
 import { Game } from "@utils/types";
+import GlobalContext from "../../context/globalContext";
 
 // Mocking react-router-dom hooks
 jest.mock("react-router-dom", () => ({

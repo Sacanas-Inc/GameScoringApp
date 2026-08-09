@@ -7,6 +7,10 @@ interface NewGameFormModalProps {
   onGameAdded: (newGameName: string) => void;
 }
 
+interface FormErrors {
+  gameName?: string;
+}
+
 const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
   onClose,
   onGameAdded
@@ -14,9 +18,23 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
   const { postGame, loading, error } = usePostGame();
   const [gameName, setGameName] = useState("");
   const [gameDescription, setGameDescription] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validate = (): FormErrors => {
+    const newErrors: FormErrors = {};
+    if (!gameName.trim()) {
+      newErrors.gameName = "Game Name is required";
+    }
+    return newErrors;
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     const gameData = { gameName, gameDescription };
     await postGame(gameData);
     onClose();
@@ -27,6 +45,7 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
     const { name, value } = event.target;
     if (name === "gameName") {
       setGameName(value);
+      setErrors((prev) => ({ ...prev, gameName: undefined }));
     } else if (name === "gameDescription") {
       setGameDescription(value);
     }
@@ -38,7 +57,7 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
         <Modal.Title>Enter Game Name</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} noValidate>
           <Form.Group controlId="formGameName">
             <Form.Label>Game Name:</Form.Label>
             <Form.Control
@@ -47,7 +66,11 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
               name="gameName"
               value={gameName}
               onChange={handleInputChange}
+              isInvalid={!!errors.gameName}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.gameName}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="formGameDescription">
             <Form.Label>Game Description (optional):</Form.Label>
