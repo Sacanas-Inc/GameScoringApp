@@ -25,6 +25,11 @@
   padding-top: 10px;
 }
 
+.scoreCard {
+  max-height: 300px;
+  overflow: hidden;
+}
+
 .cardTitle {
   font-size: 25px;
   font-weight: bold;

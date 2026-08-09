@@ -60,6 +60,14 @@ export const GameList = () => {
                 }}
               >
                 <Card.CardTitle>{game.gameName}</Card.CardTitle>
+                {game.gameDescription && (
+                  <div
+                    className="cardDescription"
+                    data-testid={`game-description-${game.id}`}
+                  >
+                    {game.gameDescription}
+                  </div>
+                )}
                 <Card.DeleteButton
                   tagKey={`delete-${game.id}-${index}`}
                   action={() => {
@@ -73,7 +81,7 @@ export const GameList = () => {
             <Card.CardTitle>Add Game</Card.CardTitle>
             <Card.AddGameButton
               action={() => {
-                console.warn("Not implemented yet!");
+                handleAddNewGame();
               }}
             />
           </Card>

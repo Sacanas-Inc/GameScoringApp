@@ -14,7 +14,7 @@ jest.mock("react-router-dom", () => ({
 
 // Mocking custom hooks
 jest.mock("../../hooks/useGetAllMatchesByGameId", () => ({
-  useGetAllMatchesByGameId: () => ({
+  useGetAllMatchesByGameId: jest.fn(() => ({
     matches: [
       {
         matchId: 1,
@@ -23,12 +23,12 @@ jest.mock("../../hooks/useGetAllMatchesByGameId", () => ({
     ],
     loading: false,
     refetch: jest.fn()
-  })
+  }))
 }));
 
 jest.mock("../../hooks/useGetGameById", () => ({
   useGetGameById: () => ({
-    game: { gameName: "Test Game" },
+    game: { gameName: "Test Game", gameDescription: "A card drafting game" },
     fetchGame: jest.fn()
   })
 }));
@@ -98,6 +98,50 @@ describe("MatchList Tests", () => {
     await waitFor(() => {
       const headerElement = screen.getByTestId(`add-match-card-test-id`);
       expect(headerElement).toBeInTheDocument();
+    });
+  });
+
+  test("Displays match notes", async () => {
+    const useGetAllMatchesByGameIdMock =
+      require("../../hooks/useGetAllMatchesByGameId").useGetAllMatchesByGameId;
+    useGetAllMatchesByGameIdMock.mockImplementationOnce(() => ({
+      matches: [
+        { matchId: 99, matchDataPoints: [], notes: "Tiebreaker on Sunday" }
+      ],
+      loading: false,
+      refetch: jest.fn()
+    }));
+
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={[`/matches/test`]}>
+          <Routes>
+            <Route path="/matches/:id" element={<MatchList />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    });
+
+    await waitFor(() => {
+      const notes = screen.getByTestId(`match-notes-99`);
+      expect(notes).toHaveTextContent("Tiebreaker on Sunday");
+    });
+  });
+
+  test("Displays game description", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={[`/matches/test`]}>
+          <Routes>
+            <Route path="/matches/:id" element={<MatchList />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    });
+
+    await waitFor(() => {
+      const description = screen.getByTestId("game-description-page-test-id");
+      expect(description).toHaveTextContent("A card drafting game");
     });
   });
 });

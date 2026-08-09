@@ -49,7 +49,7 @@ jest.mock("../../hooks/useGetMatchById", () => ({
         ],
         matchDate: new Date(),
         matchId: 3,
-        notes: ""
+        notes: "Tiebreaker on Sunday"
       }),
     loading: false
   })
@@ -106,6 +106,23 @@ describe("MatchScoring Tests", () => {
     await waitFor(() => {
       const headerElement = screen.getByTestId(`add-score-card-test-id`);
       expect(headerElement).toBeInTheDocument();
+    });
+  });
+
+  test("Displays match notes", async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={[`/matches/1/scoring/3`]}>
+          <Routes>
+            <Route path="/matches/1/scoring/3" element={<MatchScoring />} />
+          </Routes>
+        </MemoryRouter>
+      );
+    });
+
+    await waitFor(() => {
+      const notes = screen.getByTestId("match-notes-data-test-id");
+      expect(notes).toHaveTextContent("Tiebreaker on Sunday");
     });
   });
 });

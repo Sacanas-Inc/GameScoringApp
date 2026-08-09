@@ -106,4 +106,15 @@ describe("GameList Tests", () => {
       expect(headerElement).toBeInTheDocument();
     });
   });
+
+  test("Displays game description", async () => {
+    await act(async () => {
+      renderGameList();
+    });
+
+    await waitFor(() => {
+      const description = screen.getByTestId(`game-description-1`);
+      expect(description).toHaveTextContent("none");
+    });
+  });
 });

@@ -70,6 +70,14 @@ export const MatchList = () => {
           {game !== undefined && game?.gameName}
         </h1>
       </div>
+      {game?.gameDescription && (
+        <p
+          className="cardDescription"
+          data-testid="game-description-page-test-id"
+        >
+          {game.gameDescription}
+        </p>
+      )}
       {loading ? (
         <Loader />
       ) : (
@@ -84,6 +92,14 @@ export const MatchList = () => {
                 }}
               >
                 <Card.CardTitle>Match {match.matchId}</Card.CardTitle>
+                {match.notes && (
+                  <div
+                    className="cardDescription"
+                    data-testid={`match-notes-${match.matchId}`}
+                  >
+                    {match.notes}
+                  </div>
+                )}
                 {handleMatchData(match.matchDataPoints)?.map(
                   (matchDataPoint) => (
                     <Card.PlayerPoints key={matchDataPoint.playerName}>
@@ -104,7 +120,7 @@ export const MatchList = () => {
             <Card.CardTitle>Add Match</Card.CardTitle>
             <Card.AddGameButton
               action={() => {
-                console.warn("Not implemented!");
+                handleAddNewMatch();
               }}
             />
           </Card>
