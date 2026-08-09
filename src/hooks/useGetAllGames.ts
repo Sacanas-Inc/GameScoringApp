@@ -1,9 +1,9 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import api from "@api/api";
 import { Game } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";
 import GlobalContext from "src/context/globalContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export const useGetAllGames = () => {
   const { setGames } = useContext(GlobalContext);
@@ -12,10 +12,12 @@ export const useGetAllGames = () => {
     queryFn: async () => {
       const response = await api.GetAllGames();
       return response.data ?? [];
-    },onSuccess: (games) => {
-      setGames(games);
     }
   });
+
+  useEffect(() => {
+    setGames(data ?? []);
+  }, [data, setGames]);
 
   return {
     games: data ?? [],

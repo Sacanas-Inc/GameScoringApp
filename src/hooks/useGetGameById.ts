@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
 import { Game } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";

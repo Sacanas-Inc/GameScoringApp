@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
 import { MatchDataRow } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";

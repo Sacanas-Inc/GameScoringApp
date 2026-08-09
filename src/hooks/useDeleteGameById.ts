@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
 import { queryKeys } from "@api/queryKeys";
 
@@ -31,7 +31,7 @@ export const useDeleteGameById = () => {
 
   return {
     deleteGame,
-    loading: mutation.isLoading,
+    loading: mutation.isPending,
     error: mutation.error ? String(mutation.error) : null
   };
 };
