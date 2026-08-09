@@ -30,6 +30,11 @@
   overflow: hidden;
 }
 
+.scrollableCard {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
 .cardTitle {
   font-size: 25px;
   font-weight: bold;

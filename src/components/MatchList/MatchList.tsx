@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "@components/MatchList/matchList.module.scss";
 import Card from "@components/Card/Card";
+import cardStyles from "@components/Card/card.module.scss";
 import { MatchDataPoints } from "@utils/types";
 import Popup from "@components/Popup/Popup";
 import { NewMatchForm } from "@components/NewGameForm/NewMatchForm";
@@ -87,6 +88,7 @@ export const MatchList = () => {
               <Card
                 key={match.matchId}
                 dataTestId={`match-card-${match.matchId}`}
+                className={`${cardStyles.card} ${cardStyles.scrollableCard}`}
                 action={() => {
                   handleGotoMatches(match?.matchId);
                 }}
