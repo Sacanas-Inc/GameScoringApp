@@ -11,17 +11,16 @@ import styles from "@components/GameList/gameList.module.scss";
 import GlobalContext from "../../context/globalContext";
 
 export const GameList = () => {
-
   const navigate = useNavigate();
   const { deleteGame } = useDeleteGameById();
   const { refetchGames, loading } = useGetAllGames();
   const [showModal, setShowModal] = useState<boolean>(false);
   const { games } = useContext(GlobalContext);
- 
+
   const handleAddNewGame = () => {
     setShowModal(true);
   };
- 
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -46,8 +45,10 @@ export const GameList = () => {
       <h1 style={{ textAlign: "center" }} data-testid="app-title-data-test-id">
         Game Scoring App
       </h1>
+      {loading ? (
+        <Loader />
+      ) : (
         <div className={styles.gameList}>
-          {loading && <Loader />}
           {games.length > 0 &&
             games.map((game, index) => (
               <Card
@@ -88,6 +89,7 @@ export const GameList = () => {
             </Popup>
           )}
         </div>
-      </div>
+      )}
+    </div>
   );
 };

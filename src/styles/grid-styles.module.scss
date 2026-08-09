@@ -3,7 +3,8 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 20px;
+  margin: 20px auto;
+  max-width: var(--gs-max-row-width);
 }
 
 .wrapper {
@@ -101,25 +102,4 @@
   background-color: var(--gs-surface);
   border: 1px solid var(--gs-border);
   color: var(--gs-text);
-}
-
-.returnButton {
-  width: 30px;
-  height: 30px;
-  font-weight: 800;
-  font-size: 16px;
-  padding: 0;
-  position: absolute;
-  left: 32px;
-  display: flex;
-  justify-content: center;
-  color: var(--gs-accent);
-  background-color: transparent;
-  border: 2px solid var(--gs-accent);
-  border-radius: 50%;
-  &:hover {
-    background-color: var(--gs-surface-elevated);
-    transform: scale(1.25, 1.25);
-  }
-  transition: 0.1s ease-in;
 }

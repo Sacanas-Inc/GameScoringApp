@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import { ReturnButton } from "@components/ReturnButton/ReturnButton";
 import { Match, MatchDataPoints } from "@utils/types";
 import { toPascalCase } from "@utils/helpers";
 import { useDownloadAsCSV } from "../../hooks/useDownloadAsCSV";
@@ -13,7 +14,6 @@ import Popup from "../Popup/Popup";
 import styles from "../../styles/grid-styles.module.scss";
 
 export const MatchScoring = () => {
-  const navigate = useNavigate();
   const { downloadFileAsCSV } = useDownloadAsCSV();
   const { id = 0, matchId = 0 } = useParams();
   const { game, fetchGame } = useGetGameById();
@@ -24,7 +24,7 @@ export const MatchScoring = () => {
 
   useEffect(() => {
     getData(matchId).then((response) => {
-      setMatch(response);
+      setMatch(response || ({} as Match));
     });
     fetchGame({ gameId: id });
   }, []);
@@ -70,19 +70,14 @@ export const MatchScoring = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <button
-          type="button"
-          className={styles.returnButton}
-          onClick={() => {
-            navigate(`/matches/${id}`);
-          }}
+        <ReturnButton to={`/matches/${id}`} />
+        <h1
+          style={{ textAlign: "center" }}
+          data-testid="game-title-data-test-id"
         >
-          {"<"}
-        </button>
+          {game !== undefined && `${game?.gameName} - Match ${matchId}`}
+        </h1>
       </div>
-      <h1 style={{ textAlign: "center" }} data-testid="game-title-data-test-id">
-        {game !== undefined && `${game?.gameName} - Match ${matchId}`}
-      </h1>
       {loading && !match.matchDataPoints && match === ({} as Match) ? (
         <Loader />
       ) : (
@@ -132,7 +127,7 @@ export const MatchScoring = () => {
                   <NewScoreForm
                     refetch={() =>
                       getData(matchId)
-                        .then((response) => setMatch(response))
+                        .then((response) => setMatch(response || ({} as Match)))
                         .finally(() => setShowModal(false))
                     }
                   />

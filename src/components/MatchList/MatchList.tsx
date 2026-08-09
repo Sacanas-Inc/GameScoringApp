@@ -10,6 +10,7 @@ import { useGetAllMatchesByGameId } from "@hooks/useGetAllMatchesByGameId";
 import { useGetGameById } from "@hooks/useGetGameById";
 import { useDeleteMatchById } from "@hooks/useDeleteMatchAndDataPoints";
 import { toPascalCase } from "@utils/helpers";
+import { ReturnButton } from "@components/ReturnButton/ReturnButton";
 
 export const MatchList = () => {
   const { id = 0 } = useParams();
@@ -64,15 +65,7 @@ export const MatchList = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <button
-          type="button"
-          className={styles.returnButton}
-          onClick={() => {
-            navigate(`/`);
-          }}
-        >
-          {"<"}
-        </button>
+        <ReturnButton to="/" />
         <h1 style={{ textAlign: "center" }}>
           {game !== undefined && game?.gameName}
         </h1>
