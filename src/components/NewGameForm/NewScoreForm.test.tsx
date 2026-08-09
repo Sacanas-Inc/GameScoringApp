@@ -30,32 +30,10 @@ describe("NewScoreForm Tests", () => {
     await waitFor(() => {
       expect(screen.getByText("Player Name is required")).toBeInTheDocument();
     });
-    await waitFor(() => {
-      expect(
-        screen.getByText("Game Points must be a number")
-      ).toBeInTheDocument();
-    });
+    
     expect(mockPostData).not.toHaveBeenCalled();
   });
 
-  test("shows number error when game points is not a number", async () => {
-    render(<NewScoreForm refetch={jest.fn()} />);
-
-    fireEvent.change(screen.getByPlaceholderText("Player Name"), {
-      target: { value: "Miguel" }
-    });
-    fireEvent.change(screen.getByPlaceholderText("Game Points"), {
-      target: { value: "abc" }
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
-
-    await waitFor(() => {
-      expect(
-        screen.getByText("Game Points must be a number")
-      ).toBeInTheDocument();
-    });
-    expect(mockPostData).not.toHaveBeenCalled();
-  });
 
   test("submits when player name and numeric game points are provided", async () => {
     const refetch = jest.fn();

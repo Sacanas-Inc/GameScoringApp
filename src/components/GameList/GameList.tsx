@@ -42,11 +42,10 @@ export const GameList = () => {
   };
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <h1 style={{ textAlign: "center" }} data-testid="app-title-data-test-id">
         Game Scoring App
       </h1>
-      <div className={styles.contentWrapper}>
         <div className={styles.gameList}>
           {loading && <Loader />}
           {games.length > 0 &&
@@ -90,6 +89,5 @@ export const GameList = () => {
           )}
         </div>
       </div>
-    </>
   );
 };

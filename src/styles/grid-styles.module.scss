@@ -4,12 +4,25 @@
   flex-wrap: wrap;
   gap: 10px;
   margin: 20px;
-  @media screen and (max-width: 1024px) {
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding:32px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.header{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .grid {
   display: flex;
@@ -68,17 +81,9 @@
 }
 
 .formButton {
-  position: relative;
-  left: 50%;
   font-weight: 600;
-  transform: translateX(-50%);
-  padding: 5px;
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 50%;
-  text-align: center;
   border: 1px solid black;
-
+  width: 250px;
   &:hover {
     cursor: pointer;
   }
@@ -93,16 +98,22 @@
 }
 
 .returnButton {
-  width: 25px;
-  height: 25px;
-  font-weight: 600;
+  width: 30px;
+  height: 30px;
+  font-weight: 800;
   font-size: 16px;
   padding: 0;
-  border: 0;
+  position: absolute;
+  left: 32px;  
   display: flex;
   justify-content: center;
-  background-color: #f0f0f0;
+  color: black;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 50%;
   &:hover {
-    background-color: #dedede;
+    background-color: #fff;
+    transform: scale(1.25,1.25);
   }
+  transition: .1s ease-in;
 }

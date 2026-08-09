@@ -1,20 +1,20 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { useEffect, useState } from "react";
 import { Match, MatchDataPoints } from "@utils/types";
 import { toPascalCase } from "@utils/helpers";
-import styles from "../../styles/grid-styles.module.scss";
 import { useDownloadAsCSV } from "../../hooks/useDownloadAsCSV";
 import { useGetMatchById } from "../../hooks/useGetMatchById";
 import { Loader } from "../Loader/Loader";
 import { useGetGameById } from "../../hooks/useGetGameById";
+import { NewScoreForm } from "../NewGameForm/NewScoreForm";
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
-import { NewScoreForm } from "../NewGameForm/NewScoreForm";
+import styles from "../../styles/grid-styles.module.scss";
 
 export const MatchScoring = () => {
-  const { downloadFileAsCSV } = useDownloadAsCSV();
   const navigate = useNavigate();
+  const { downloadFileAsCSV } = useDownloadAsCSV();
   const { id = 0, matchId = 0 } = useParams();
   const { game, fetchGame } = useGetGameById();
   const { getData, loading } = useGetMatchById();
@@ -68,7 +68,18 @@ export const MatchScoring = () => {
   };
 
   return (
-    <>
+    <div className={styles.wrapper}>
+      <div className={styles.header}>
+        <button
+          type="button"
+          className={styles.returnButton}
+          onClick={() => {
+            navigate(`/matches/${id}`);
+          }}
+        >
+          {"<"}
+        </button>
+      </div>
       <h1 style={{ textAlign: "center" }} data-testid="game-title-data-test-id">
         {game !== undefined && `${game?.gameName} - Match ${matchId}`}
       </h1>
@@ -76,15 +87,6 @@ export const MatchScoring = () => {
         <Loader />
       ) : (
         <>
-          <button
-            type="button"
-            className={styles.returnButton}
-            onClick={() => {
-              navigate(`/matches/${id}`);
-            }}
-          >
-            {"<"}
-          </button>
           <div className={styles.gridContainer}>
             {match?.matchDataPoints?.length > 0 &&
               handleScoreData(match?.matchDataPoints)?.map((player) => (
@@ -147,6 +149,6 @@ export const MatchScoring = () => {
           </Button>
         </>
       )}
-    </>
+    </div>
   );
 };

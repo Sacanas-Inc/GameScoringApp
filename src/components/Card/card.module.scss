@@ -70,7 +70,10 @@
   right: -10px;
   &:hover {
     background-color: black;
+    transform: scale(1.25,1.25);
   }
+  transition: .1s ease-in;
+
 }
 
 .card:has(.addGameButton) {

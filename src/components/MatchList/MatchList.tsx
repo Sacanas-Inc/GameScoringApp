@@ -62,76 +62,73 @@ export const MatchList = () => {
     navigate(`/matches/${id}/scoring/${matchId}`);
   };
   return (
-    <>
-      <h1 style={{ textAlign: "center" }}>
-        {game !== undefined && game?.gameName}
-      </h1>
+    <div className={styles.wrapper}>
+      <div className={styles.header}>
+        <button
+          type="button"
+          className={styles.returnButton}
+          onClick={() => {
+            navigate(`/`);
+          }}
+        >
+          {"<"}
+        </button>
+        <h1 style={{ textAlign: "center" }}>
+          {game !== undefined && game?.gameName}
+        </h1>
+      </div>
       {loading ? (
         <Loader />
       ) : (
-        <>
-          <button
-            type="button"
-            className={styles.returnButton}
-            onClick={() => {
-              navigate(`/`);
-            }}
-          >
-            {"<"}
-          </button>
-          <div className={styles.matchList}>
-            {matches.length > 0 &&
-              matches?.map((match, index) => (
-                <Card
-                  key={match.matchId}
-                  dataTestId={`match-card-${match.matchId}`}
-                  action={() => {
-                    handleGotoMatches(match?.matchId);
-                  }}
-                >
-                  <Card.CardTitle>Match {match.matchId}</Card.CardTitle>
-                  {handleMatchData(match.matchDataPoints)?.map(
-                    (matchDataPoint) => (
-                      <Card.PlayerPoints key={matchDataPoint.playerName}>
-                        <div>{matchDataPoint.playerName}</div>
-                        <div>{matchDataPoint.totalPoints}</div>
-                      </Card.PlayerPoints>
-                    )
-                  )}
-                  <Card.DeleteButton
-                    tagKey={`delete-${match.matchId}-${index}`}
-                    action={() => {
-                      handleDelete({ matchId: match.matchId });
-                    }}
-                  />
-                </Card>
-              ))}
-            <Card
-              action={handleAddNewMatch}
-              dataTestId="add-match-card-test-id"
-            >
-              <Card.CardTitle>Add Match</Card.CardTitle>
-              <Card.AddGameButton
+        <div className={styles.matchList}>
+          {matches.length > 0 &&
+            matches?.map((match, index) => (
+              <Card
+                key={match.matchId}
+                dataTestId={`match-card-${match.matchId}`}
                 action={() => {
-                  console.warn("Not implemented!");
+                  handleGotoMatches(match?.matchId);
                 }}
-              />
-            </Card>
-            {showModal && (
-              <Popup handleClose={handleCloseModal}>
-                <Popup.Header>Add New Game</Popup.Header>
-                <Popup.Body>
-                  <NewMatchForm
-                    gameId={parseInt(id.toString(), 10)}
-                    handleClose={handleCloseModal}
-                    handleMatchAdded={handleMatchAdded}
-                  />
-                </Popup.Body>
-              </Popup>
-            )}
-          </div>
-        </>
+              >
+                <Card.CardTitle>Match {match.matchId}</Card.CardTitle>
+                {handleMatchData(match.matchDataPoints)?.map(
+                  (matchDataPoint) => (
+                    <Card.PlayerPoints key={matchDataPoint.playerName}>
+                      <div>{matchDataPoint.playerName}</div>
+                      <div>{matchDataPoint.totalPoints}</div>
+                    </Card.PlayerPoints>
+                  )
+                )}
+                <Card.DeleteButton
+                  tagKey={`delete-${match.matchId}-${index}`}
+                  action={() => {
+                    handleDelete({ matchId: match.matchId });
+                  }}
+                />
+              </Card>
+            ))}
+          <Card action={handleAddNewMatch} dataTestId="add-match-card-test-id">
+            <Card.CardTitle>Add Match</Card.CardTitle>
+            <Card.AddGameButton
+              action={() => {
+                console.warn("Not implemented!");
+              }}
+            />
+          </Card>
+          {showModal && (
+            <Popup handleClose={handleCloseModal}>
+              <Popup.Header>Add New Game</Popup.Header>
+              <Popup.Body>
+                <NewMatchForm
+                  gameId={parseInt(id.toString(), 10)}
+                  handleClose={handleCloseModal}
+                  handleMatchAdded={handleMatchAdded}
+                />
+              </Popup.Body>
+            </Popup>
+          )}
+        </div>
       )}
-    </>
+    </div>
   );
 };
