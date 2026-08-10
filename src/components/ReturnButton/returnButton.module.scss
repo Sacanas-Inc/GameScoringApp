@@ -12,9 +12,15 @@
   background-color: transparent;
   border: 2px solid var(--gs-accent);
   border-radius: 50%;
+  z-index: 1;
   &:hover {
     background-color: var(--gs-surface-elevated);
     transform: scale(1.25, 1.25);
   }
   transition: 0.1s ease-in;
+  @media screen and (max-width:467px) {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+  }
 }
