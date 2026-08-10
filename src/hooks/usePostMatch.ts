@@ -1,36 +1,45 @@
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { queryKeys } from "@api/queryKeys";
 
-interface MatchData {
+export interface MatchData {
   gameId: number | string;
   notes?: string;
 }
 
 export const usePostMatch = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (matchData: MatchData) => {
+      const response = await api.PostMatch(matchData);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`API response Status: ${response.status}`, {
+          cause: response.statusText
+        });
+      }
+      return response.data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.matches });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.matchesByGame(variables.gameId)
+      });
+    }
+  });
 
   const postMatch = async (matchData: MatchData) => {
-    setLoading(true);
-    return api
-      .PostMatch(matchData)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText
-          });
-        return response.json();
-      })
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
+    try {
+      return await mutation.mutateAsync(matchData);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      return undefined;
+    }
   };
 
-  return { postMatch, loading, error };
+  return {
+    postMatch,
+    loading: mutation.isPending,
+    error: mutation.error ? String(mutation.error) : null
+  };
 };

@@ -1,28 +1,37 @@
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { queryKeys } from "@api/queryKeys";
 
 export const useDeleteGameById = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async ({ gameId }: { gameId: string | number }) => {
+      const response = await api.DeleteGame(gameId);
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(`API response Status: ${response.status}`, {
+          cause: response.statusText
+        });
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.games });
+    }
+  });
+
   const deleteGame = async ({ gameId }: { gameId: string | number }) => {
-    setLoading(true);
-    return api
-      .DeleteGame(gameId)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`API response Status: ${response.status}`, {
-            cause: response.statusText
-          });
-      })
-      .finally(() => {
-        setLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err);
-        console.error(err);
-      });
+    try {
+      return await mutation.mutateAsync({ gameId });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      return undefined;
+    }
   };
 
-  return { loading, error, deleteGame };
+  return {
+    deleteGame,
+    loading: mutation.isPending,
+    error: mutation.error ? String(mutation.error) : null
+  };
 };

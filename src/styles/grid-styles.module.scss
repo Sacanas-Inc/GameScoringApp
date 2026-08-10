@@ -3,12 +3,25 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 20px;
-  @media screen and (max-width: 1024px) {
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
+  margin: 20px auto;
+  max-width: var(--gs-max-row-width);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 32px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .grid {
@@ -25,9 +38,10 @@
 
   .gridColumnHeader {
     display: flex;
-    border: 1px solid black;
+    border: 1px solid var(--gs-border);
     padding: 5px;
-    background-color: rgb(180, 180, 180);
+    background-color: var(--gs-surface-elevated);
+    color: var(--gs-text);
     width: calc(20% - 2px - 10px);
     flex-wrap: wrap;
     align-content: center;
@@ -36,13 +50,14 @@
   }
   .gridCell {
     flex-wrap: wrap;
-    border: 1px solid black;
+    border: 1px solid var(--gs-border);
     padding: 5px;
     width: calc(20% - 2px - 10px);
     display: flex;
     align-content: center;
     justify-content: center;
-    background-color: rgb(240, 240, 240);
+    background-color: var(--gs-surface);
+    color: var(--gs-text);
   }
 }
 
@@ -68,17 +83,11 @@
 }
 
 .formButton {
-  position: relative;
-  left: 50%;
   font-weight: 600;
-  transform: translateX(-50%);
-  padding: 5px;
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 50%;
-  text-align: center;
-  border: 1px solid black;
-
+  border: 1px solid var(--gs-border);
+  background-color: var(--gs-accent);
+  color: var(--gs-accent-text);
+  width: 250px;
   &:hover {
     cursor: pointer;
   }
@@ -90,19 +99,7 @@
   border-radius: 5px;
   margin: 10px 0;
   padding: 5px;
-}
-
-.returnButton {
-  width: 25px;
-  height: 25px;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 0;
-  border: 0;
-  display: flex;
-  justify-content: center;
-  background-color: #f0f0f0;
-  &:hover {
-    background-color: #dedede;
-  }
+  background-color: var(--gs-surface);
+  border: 1px solid var(--gs-border);
+  color: var(--gs-text);
 }

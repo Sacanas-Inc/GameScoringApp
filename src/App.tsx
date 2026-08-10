@@ -1,20 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { PrimeReactProvider } from "primereact/api";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GameList } from "@components/GameList/GameList";
-import { useGetAllGames } from "@hooks/useGetAllGames";
 import { MatchList } from "@components/MatchList/MatchList";
 import { MatchScoring } from "@components/MatchScoring/MatchScoring";
-import GlobalContext from "./context/globalContext";
 
 function App() {
-  const { games } = useGetAllGames();
-
-  const { setGames } = useContext(GlobalContext);
-
-  useEffect(() => {
-    setGames(games);
-  }, [games]);
 
   const router = createBrowserRouter([
     {
@@ -45,10 +36,10 @@ function App() {
                 onClick: (e) => e.stopPropagation()
               },
               acceptButton: {
-                root: { onClick: (e) => e.stopPropagation() }
+                root: { onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => e.stopPropagation() }
               },
               rejectButton: {
-                root: { onClick: (e) => e.stopPropagation() }
+                root: { onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => e.stopPropagation() }
               }
             },
             dialog: {

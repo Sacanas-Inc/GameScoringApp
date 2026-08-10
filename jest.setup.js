@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
-import "@testing-library/jest-dom/extend-expect";
+import { TextDecoder, TextEncoder } from "util";
+import "@testing-library/jest-dom";
+
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 
 // Suppress specific errors and warnings
 const originalConsoleError = console.error;

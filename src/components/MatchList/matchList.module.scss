@@ -1,16 +1,18 @@
-.returnButton {
-  width: 25px;
-  height: 25px;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 0;
-  border: 0;
+.header {
   display: flex;
+  width: 100%;
+  align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
-  &:hover {
-    background-color: #dedede;
-  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 32px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .matchList {
@@ -18,5 +20,6 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 20px;
+  margin: 20px auto;
+  max-width: var(--gs-max-row-width);
 }

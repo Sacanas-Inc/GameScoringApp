@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "@components/Card/Card";
 import { useDeleteGameById } from "@hooks/useDeleteGameById";
@@ -8,15 +8,19 @@ import Popup from "@components/Popup/Popup";
 import { useGetAllGames } from "@hooks/useGetAllGames";
 import { Loader } from "@components/Loader/Loader";
 import styles from "@components/GameList/gameList.module.scss";
+import GlobalContext from "../../context/globalContext";
 
 export const GameList = () => {
-  const { deleteGame } = useDeleteGameById();
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const { games, refetchGames, loading } = useGetAllGames();
   const navigate = useNavigate();
+  const { deleteGame } = useDeleteGameById();
+  const { refetchGames, loading } = useGetAllGames();
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const { games } = useContext(GlobalContext);
+
   const handleAddNewGame = () => {
     setShowModal(true);
   };
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -37,13 +41,14 @@ export const GameList = () => {
   };
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <h1 style={{ textAlign: "center" }} data-testid="app-title-data-test-id">
         Game Scoring App
       </h1>
-      <div className={styles.contentWrapper}>
+      {loading ? (
+        <Loader />
+      ) : (
         <div className={styles.gameList}>
-          {loading && <Loader />}
           {games.length > 0 &&
             games.map((game, index) => (
               <Card
@@ -55,6 +60,14 @@ export const GameList = () => {
                 }}
               >
                 <Card.CardTitle>{game.gameName}</Card.CardTitle>
+                {game.gameDescription && (
+                  <div
+                    className="cardDescription"
+                    data-testid={`game-description-${game.id}`}
+                  >
+                    {game.gameDescription}
+                  </div>
+                )}
                 <Card.DeleteButton
                   tagKey={`delete-${game.id}-${index}`}
                   action={() => {
@@ -68,7 +81,7 @@ export const GameList = () => {
             <Card.CardTitle>Add Game</Card.CardTitle>
             <Card.AddGameButton
               action={() => {
-                console.warn("Not implemented yet!");
+                handleAddNewGame();
               }}
             />
           </Card>
@@ -84,7 +97,7 @@ export const GameList = () => {
             </Popup>
           )}
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };

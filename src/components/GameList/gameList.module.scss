@@ -1,9 +1,11 @@
-.contentWrapper {
-  max-width: 1000px;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 32px;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  left: 50%;
-  position: relative;
-  transform: translate(-50%);
 }
 
 .gameList {
@@ -11,5 +13,6 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 20px;
+  margin: 20px auto;
+  max-width: var(--gs-max-row-width);
 }

@@ -3,6 +3,10 @@ import { Button, Form } from "react-bootstrap";
 import { Match } from "@utils/types";
 import { usePostMatch } from "@hooks/usePostMatch";
 
+interface FormErrors {
+  matchNotes?: string;
+}
+
 export const NewMatchForm = ({
   gameId,
   handleClose,
@@ -13,10 +17,18 @@ export const NewMatchForm = ({
   handleMatchAdded: (newGameName: Match) => void;
 }) => {
   const [matchNotes, setMatchNotes] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
   const { postMatch, loading, error } = usePostMatch();
+
+  const validate = (): FormErrors => ({});
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     const matchData = {
       gameId,
       notes: matchNotes
@@ -32,7 +44,7 @@ export const NewMatchForm = ({
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <Form.Group controlId="formMatchNotes">
         <Form.Label>Match Notes:</Form.Label>
         <Form.Control
@@ -41,7 +53,11 @@ export const NewMatchForm = ({
           name="matchNotes"
           value={matchNotes}
           onChange={handleInputChange}
+          isInvalid={!!errors.matchNotes}
         />
+        <Form.Control.Feedback type="invalid">
+          {errors.matchNotes}
+        </Form.Control.Feedback>
       </Form.Group>
       <Button variant="primary" type="submit" disabled={loading}>
         Submit
