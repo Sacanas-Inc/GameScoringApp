@@ -33,7 +33,7 @@ jest.mock("../../hooks/useGetGameById", () => ({
   })
 }));
 
-jest.mock("../../hooks/useDeleteMatchAndDataPoints", () => ({
+jest.mock("../../hooks/useDeleteMatchById", () => ({
   useDeleteMatchById: () => ({
     deleteMatch: jest.fn()
   })

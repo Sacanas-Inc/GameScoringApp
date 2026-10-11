@@ -57,12 +57,6 @@ jest.mock("../../hooks/useGetAllGames", () => ({
   })
 }));
 
-jest.mock("../../hooks/useDeleteMatchAndDataPoints", () => ({
-  useDeleteMatchById: () => ({
-    deleteMatch: jest.fn()
-  })
-}));
-
 jest.mock("../../hooks/useDeleteGameById", () => ({
   useDeleteGameById: () => ({
     deleteGame: jest.fn(),

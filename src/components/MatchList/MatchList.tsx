@@ -9,7 +9,7 @@ import { NewMatchForm } from "@components/NewGameForm/NewMatchForm";
 import { Loader } from "@components/Loader/Loader";
 import { useGetAllMatchesByGameId } from "@hooks/useGetAllMatchesByGameId";
 import { useGetGameById } from "@hooks/useGetGameById";
-import { useDeleteMatchById } from "@hooks/useDeleteMatchAndDataPoints";
+import { useDeleteMatchById } from "@hooks/useDeleteMatchById";
 import { toPascalCase } from "@utils/helpers";
 import { ReturnButton } from "@components/ReturnButton/ReturnButton";
 
