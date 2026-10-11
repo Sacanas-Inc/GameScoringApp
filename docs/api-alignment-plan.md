@@ -153,6 +153,6 @@ ReturnPostMatchDataPointDto: id, matchId, playerName, gamePoints,
 
 ## References
 
-- Backend breaking changes: `Sacanas-Inc/GameScoringAPI` → `BREAKING_CHANGES.md`
+- Breaking changes: `BREAKING_CHANGES.md` (copied from the backend repo)
 - Backend endpoint source: `Api/Endpoints/{Game,Match,MatchDataPoint}`
 - Swagger UI: <https://gamescoringapi.azurewebsites.net/>
