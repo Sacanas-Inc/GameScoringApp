@@ -34,7 +34,7 @@ relative and rely on the base URL ending in `/`.
 | `GetAllMatches` | `GET /matches?includeDataPoints=true` | — | `200` `List<MatchForMatchDto>` | |
 | `GetAllMatchesByGameId` | `GET /matches?includeDataPoints=true&gameId={id}` | — | `200` `List<MatchForMatchDto>` | |
 | `GetMatchById` | `GET /match/{id}?includeDataPoints=true` | — | `200` `MatchForMatchDto` | `404 { error }` |
-| `PostMatch` | `POST /match` | `{ gameId, notes }` | `201` `MatchForMatchDto` | API also accepts `matchDate`, `isFinished`. Invalid `gameId` is now **`400`** (was `404`) |
+| `PostMatch` | `POST /match` | `{ gameId, notes }` | `201` `MatchForMatchDto` | **`matchDate` is required** — validator rejects `default` with `400`; `isFinished` optional. Invalid `gameId` is now **`400`** (was `404`) |
 | `DeleteMatch` | `DELETE /match-and-data-points/{id}` | — | `204` | still supported; `DELETE /match/{id}` is the newer, preferred route |
 | `PostMatchDataPoints` | `POST /match-data-point/{matchId}` | `{ playerName, gamePoints, pointsDescription }` | `201` `ReturnPostMatchDataPointDto` | `matchId` in the body is ignored — the route value wins |
 
@@ -92,8 +92,10 @@ ReturnPostMatchDataPointDto: id, matchId, playerName, gamePoints,
    → Coerce to a number before posting (in the form submit or in
    `usePostMatchDataPoints`). Guard `NaN`.
 
-3. **`POST /match` does not send `matchDate`.**
-   The API persists `request.MatchDate` verbatim; omitting it stores `0001-01-01`.
+3. **`POST /match` does not send `matchDate`, which is now required.**
+   The validator rejects a missing/`default` `MatchDate` with
+   `400 { "errors": ["MatchDate is required."] }`, so match creation currently
+   fails outright (and even when accepted it would store `0001-01-01`).
    → Send `matchDate: new Date().toISOString()` (and `isFinished: false`). Keep it
    a default — no new date picker.
 

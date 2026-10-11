@@ -73,32 +73,69 @@ The `Location` header in the created response points to a different path.
 
 ---
 
-## 6. `POST /match-data-point/{matchId}` — Request Body Field Removed
+## 6. `POST /match` — `MatchDate` Is Now Required
 
-The old `PostMatchDataPointDto` accepted a `createdDate` field. The new `CreateMatchDataPointRequest` does not — the date is now set server-side.
+`MatchValidator.ValidateForCreateAsync` rejects a request whose `MatchDate` is the
+`default` value:
+
+```csharp
+if (request.MatchDate == default)
+    errors.Add("MatchDate is required.");
+```
+
+The previous version accepted any value. A client that omits `matchDate` now gets
+`400 Bad Request` with `{ "errors": ["MatchDate is required."] }` instead of the
+match being created with a `0001-01-01` date.
+
+---
+
+## 7. `GET /matches` — Empty Result Status Code Changed
+
+| | Empty result |
+|---|---|
+| **Before** | `404 Not Found` (`"No matches found."`) |
+| **After** | `200 OK` with `[]` |
+
+The previous handler returned `NotFound` when the query produced no matches; the
+current handler always returns `200 OK` with an empty list.
+
+---
+
+## 8. `GET /match/{id}?includeDataPoints=true` — `winningPlayer` No Longer Set
+
+The old handler called `MatchMapper.CalculateWinnerFor(match)` for single-match
+GETs. The new `MatchService.GetMatchByIdAsync` only calls `CreateMathStatsFor`, so
+`matchStats.winningPlayer` is now always `null` on this endpoint. (`GET /matches`
+still computes it for each match.) The property is also now nullable (`string?`).
+
+This is **not** caused by the refactor of `CalculateWinnerFor` itself: that method's
+condition changed from `if (Any())` to `if (!Any()) { WinningPlayer = null; return; }`,
+which is logically identical and still correct.
+
+---
+
+## Non-Breaking Changes
+
+These do not change behavior for existing consumers, but are worth knowing.
+
+### `POST /match-data-point/{matchId}` — `createdDate` Request Field Removed
+
+The old `PostMatchDataPointDto` declared `createdDate`; the new
+`CreateMatchDataPointRequest` does not. This is not a behavior change: the old
+handler already ignored the field and set `CreatedDate = DateTime.Now` server-side,
+and unknown JSON members are ignored by default.
 
 **Old fields:** `playerName`, `gamePoints`, `pointsDescription`, `createdDate`  
 **New fields:** `playerName`, `gamePoints`, `pointsDescription`
 
-Clients sending `createdDate` will have it silently ignored.
+### `PUT /match-data-point/{id}` — Newly Implemented
 
----
+Previously the mapping method was empty, so the endpoint did not exist. It is now
+implemented and, being additive, does not affect existing consumers. Validation
+failures return `409 Conflict` (not `400 Bad Request`) — non-standard, but the
+endpoint is new.
 
-## 7. `PUT /match-data-point/{id}` — Validation Error Status Code
+### `DELETE /match/{id}` — New Endpoint
 
-This endpoint is new in this PR. Validation failures return `409 Conflict` (not `400 Bad Request`), which is non-standard. Clients should handle `409` for validation errors on this endpoint.
-
----
-
-## 8. `GET /match/{id}?includeDataPoints=true` — Winner Calculation Bug
-
-`MatchMapper.CalculateWinnerFor` had its condition inverted (`if (Any())` → `if (!Any())`). This may cause the `winner` field in the match response to be incorrect or always `null` when data points are present.
-
----
-
-## Additive Changes (Non-Breaking)
-
-These are new additions and do not affect existing consumers:
-
-- **`DELETE /match/{id}`** — new endpoint; deletes a match and cascades to data points via DB triggers. The old `DELETE /match-and-data-points/{id}` endpoint is still available.
-- **`PUT /match-data-point/{id}`** — new endpoint; was previously unimplemented.
+New route that deletes a match and cascades to its data points via DB triggers.
+The old `DELETE /match-and-data-points/{id}` endpoint is still available.
