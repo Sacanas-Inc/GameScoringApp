@@ -34,6 +34,10 @@ export const NewMatchForm = ({
       notes: matchNotes
     };
     const newMatchData = await postMatch(matchData);
+    if (newMatchData === undefined) {
+      // Request failed; the hook surfaces the API error so the form stays open.
+      return;
+    }
     handleMatchAdded(newMatchData);
     handleClose();
   };

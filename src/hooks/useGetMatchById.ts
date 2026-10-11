@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { getApiErrorMessage } from "@api/apiUtils";
 import { Match } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";
 
@@ -22,7 +23,7 @@ export const useGetMatchById = () => {
       setError(null);
       return data;
     } catch (err) {
-      setError(err ? String(err) : "Unknown error");
+      setError(getApiErrorMessage(err));
       // eslint-disable-next-line no-console
       console.error(err);
       return undefined;

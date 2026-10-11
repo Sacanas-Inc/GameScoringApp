@@ -51,12 +51,22 @@ export const NewScoreForm = ({
     e.preventDefault();
 
     const newErrors = validate();
+    // The number input keeps its value as a string in state; .NET rejects a
+    // string for an `int`, so coerce before posting.
+    const gamePoints = Number(newGameData.gamePoints);
+    if (Number.isNaN(gamePoints)) {
+      newErrors.gamePoints = "Game Points must be a number";
+    }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    await postData(newGameData, matchId);
+    const result = await postData({ ...newGameData, gamePoints }, matchId);
+    if (result === undefined) {
+      // Request failed; the hook surfaces the API error so the form stays open.
+      return;
+    }
 
     setNewGameData({
       ...initialFormState

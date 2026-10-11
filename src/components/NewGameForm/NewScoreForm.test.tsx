@@ -54,7 +54,7 @@ describe("NewScoreForm Tests", () => {
       expect(mockPostData).toHaveBeenCalledWith(
         {
           playerName: "Miguel",
-          gamePoints: "12",
+          gamePoints: 12,
           pointsDescription: "Bustos"
         },
         3
@@ -63,5 +63,26 @@ describe("NewScoreForm Tests", () => {
     await waitFor(() => {
       expect(refetch).toHaveBeenCalled();
     });
+  });
+
+  test("keeps the form open and does not refetch when posting fails", async () => {
+    const refetch = jest.fn();
+    mockPostData.mockResolvedValue(undefined);
+
+    render(<NewScoreForm refetch={refetch} />);
+
+    fireEvent.change(screen.getByPlaceholderText("Player Name"), {
+      target: { value: "Miguel" }
+    });
+    fireEvent.change(screen.getByPlaceholderText("Game Points"), {
+      target: { value: "12" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+
+    await waitFor(() => {
+      expect(mockPostData).toHaveBeenCalled();
+    });
+    expect(refetch).not.toHaveBeenCalled();
+    expect(screen.getByPlaceholderText("Player Name")).toHaveValue("Miguel");
   });
 });

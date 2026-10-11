@@ -1,6 +1,6 @@
 # Frontend ↔ API alignment plan
 
-Status: **planned** · Branch: `docs/api-alignment-plan` · Owner: TBD
+Status: P0 **complete** · P1–P2 **planned** · Branch: `docs/api-alignment-plan` · Owner: TBD
 
 ## Why
 
@@ -23,7 +23,7 @@ correctness fix or a type/cleanup change with no intended behavior change.
 ## Current API contract (only the routes this app calls)
 
 Base URL comes from `REACT_APP_API_BASE_URL` (`src/api/apiUtils.ts`). Routes are
-relative and rely on the base URL ending in `/`.
+relative and expect a valid API base URL value.
 
 | App call | Method & route | Request body | Success | Notes |
 | --- | --- | --- | --- | --- |
@@ -77,6 +77,8 @@ ReturnPostMatchDataPointDto: id, matchId, playerName, gamePoints,
 
 ### P0 — correctness
 
+Status: **complete** — items 1–5 done: `getApiErrorMessage`, numeric `gamePoints`, `matchDate`/`isFinished` on `POST /match`, `404`-as-empty for games, and success-only UI transitions after mutations.
+
 1. **API error messages are never shown.**
    Every hook collapses failures to `String(error)`, which for Axios renders as
    `"AxiosError: Request failed with status code 400"`. The useful message in
@@ -104,36 +106,46 @@ ReturnPostMatchDataPointDto: id, matchId, playerName, gamePoints,
    the home screen shows an error on a fresh database instead of an empty state.
    → Handle `404` → `[]` in `useGetAllGames`, mirroring `useGetAllMatchesByGameId`.
 
+5. **Mutations behave like success when requests fail.**
+   `usePostGame` / `usePostMatch` / `usePostMatchDataPoints` catch and return
+   `undefined`, while forms still close/reset/refetch after awaiting the call.
+   This can hide server errors behind success-like UI behavior.
+   → Only close modals, reset forms, and trigger success refetches when the
+   mutation returns a successful result; keep the form open on failure so the
+   surfaced API error is visible and actionable.
+
 ### P1 — types
 
-5. **`Game` type is wrong.** It declares `matches: Match[]`, but `GameDto` returns
+6. **`Game` type is wrong.** It declares `matches: Match[]`, but `GameDto` returns
    `matchesCount: number` (and nothing in the UI reads `game.matches`).
    → Replace with `matchesCount: number`.
 
-6. **Nested data point type is over-specified.** `MatchDataPoints` requires
+7. **Nested data point type is over-specified.** `MatchDataPoints` requires
    `gameId`, `gameName`, `matchId`, which `MatchDataPointForMatchDto` does not
    return (the UI only uses `id`, `playerName`, `gamePoints`, `pointsDescription`,
    `createdDate`).
    → Split into a lean `MatchDataPoint` for the nested case; keep a separate type
    only if `/match-data-points/all/detailed` is adopted.
 
-7. **`Match` type is incomplete.** Add the optional fields the API now returns:
+8. **`Match` type is incomplete.** Add the optional fields the API now returns:
    `playerCount`, `isFinished`, `matchStats` (`totalGamePoints`, `winningPlayer`,
    `playerPoints`). Client-side aggregation can stay as-is; adding the types just
    stops the shapes from drifting.
+   Also align date fields (`matchDate`, `createdDate`) with transport shape
+   (`string` from JSON) unless we explicitly parse them into `Date`.
 
-8. **Request type reuse.** `usePostMatchDataPoints` types its payload as
+9. **Request type reuse.** `usePostMatchDataPoints` types its payload as
    `MatchDataRow` (a CSV row type). Introduce a dedicated
    `CreateMatchDataPointRequest = { playerName; gamePoints; pointsDescription }`.
 
 ### P2 — cleanup (no behavior change)
 
-9. Switch the match delete to `DELETE /match/{id}` (the API now deletes cleanly,
+10. Switch the match delete to `DELETE /match/{id}` (the API now deletes cleanly,
    including child rows). Keep the current route if you want zero churn.
-9. Remove dead code: `api.GetMatchDataPoints` (points at `GET /match/{id}`) and
+11. Remove dead code: `api.GetMatchDataPoints` (points at `GET /match/{id}`) and
    `useGetMatchGames` appear unused outside their own definitions — confirm with a
    grep before deleting.
-10. README fixes: the backend link points to `GameScoringApi` (should be
+12. README fixes: the backend link points to `GameScoringApi` (should be
    `GameScoringAPI`), and the interactive docs link can point at the app root
    (`https://gamescoringapi.azurewebsites.net/`) since Swagger now serves at `/`.
 
@@ -141,6 +153,8 @@ ReturnPostMatchDataPointDto: id, matchId, playerName, gamePoints,
 
 - `yarn lint` and `yarn test` must stay green (these run on every PR).
 - `yarn build` must succeed.
+- Update tests impacted by payload/type alignment (notably score form payload
+  assertions that currently expect string `gamePoints`).
 - Manual pass against the API (`REACT_APP_API_BASE_URL` → the hosted API, or a
   local `dotnet run`): create game → create match → add score → view scoreboard →
   export CSV → delete match/game. Confirm empty-state on a fresh DB and that
@@ -149,9 +163,11 @@ ReturnPostMatchDataPointDto: id, matchId, playerName, gamePoints,
 ## Suggested PR breakdown
 
 1. **Error handling + request fixes** (P0): `getApiErrorMessage`, coerce
-   `gamePoints`, send `matchDate`, `404`-as-empty for games.
+   `gamePoints`, send `matchDate`, `404`-as-empty for games, and success-only UI
+   transitions after mutations.
 2. **Types** (P1): align `src/utils/types.ts` with the DTOs.
-3. **Cleanup + docs** (P2): delete route, unused APIs, README.
+3. **Cleanup + docs** (P2): delete route/unused APIs, README.
+4. **Tests**: update assertions impacted by payload/type alignment.
 
 ## References
 

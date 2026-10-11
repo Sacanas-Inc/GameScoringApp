@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { getApiErrorMessage } from "@api/apiUtils";
 import { MatchDataRow } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";
 
@@ -48,6 +49,6 @@ export const usePostMatchDataPoints = () => {
   return {
     postData,
     loading: mutation.isPending,
-    error: mutation.error ? String(mutation.error) : null
+    error: mutation.error ? getApiErrorMessage(mutation.error) : null
   };
 };

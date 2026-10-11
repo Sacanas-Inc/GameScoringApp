@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { getApiErrorMessage } from "@api/apiUtils";
 import { Game } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";
 
@@ -24,7 +25,7 @@ export const useGetGameById = () => {
       setError(null);
       return data;
     } catch (err) {
-      setError(err ? String(err) : "Unknown error");
+      setError(getApiErrorMessage(err));
       // eslint-disable-next-line no-console
       console.error(err);
       setGame({} as Game);

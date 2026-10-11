@@ -36,6 +36,10 @@ export const NewGameForm = ({
     }
     const gameData = { gameName, gameDescription };
     const newGameData = await postGame(gameData);
+    if (newGameData === undefined) {
+      // Request failed; the hook surfaces the API error so the form stays open.
+      return;
+    }
     handleGameAdded(newGameData);
     handleClose();
   };

@@ -36,7 +36,11 @@ const NewGameFormModal: React.FC<NewGameFormModalProps> = ({
       return;
     }
     const gameData = { gameName, gameDescription };
-    await postGame(gameData);
+    const newGameData = await postGame(gameData);
+    if (newGameData === undefined) {
+      // Request failed; the hook surfaces the API error so the modal stays open.
+      return;
+    }
     onClose();
     onGameAdded(gameName);
   };
