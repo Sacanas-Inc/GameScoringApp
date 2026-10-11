@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { MatchDataRow } from "@utils/types";
+import { CreateMatchDataPointRequest } from "@utils/types";
 import { usePostMatchDataPoints } from "@hooks/usePostMatchDataPoints";
 
 const initialFormState = {
@@ -23,7 +23,7 @@ export const NewScoreForm = ({
   const { error, loading, postData } = usePostMatchDataPoints();
 
   const { matchId = 0 } = useParams();
-  const [newGameData, setNewGameData] = useState<MatchDataRow>({
+  const [newGameData, setNewGameData] = useState<CreateMatchDataPointRequest>({
     ...initialFormState
   });
   const [errors, setErrors] = useState<FormErrors>({});

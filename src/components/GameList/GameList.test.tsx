@@ -20,7 +20,7 @@ const mockGames: Game[] = [
     minPlayers: 2,
     maxPlayers: 4,
     averageDuration: 60,
-    matches: []
+    matchesCount: 0
   }
 ];
 

@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { createContext } from "react";
-import { Game, Match, MatchDataPoints } from "@utils/types";
+import { Game, Match, MatchDataPoint } from "@utils/types";
 
 // Define the shape of the context data
 interface GlobalContextProps {
   games: Game[];
   matches: Match[];
-  matchDataPoints: MatchDataPoints[];
+  matchDataPoints: MatchDataPoint[];
   selectedGame: number;
   selectedMatch: number;
   setSelectedGame: React.Dispatch<React.SetStateAction<number>>;
   setGames: React.Dispatch<React.SetStateAction<Game[]>>;
   setMatches: React.Dispatch<React.SetStateAction<Match[]>>;
-  setMatchDataPoints: React.Dispatch<React.SetStateAction<MatchDataPoints[]>>;
+  setMatchDataPoints: React.Dispatch<React.SetStateAction<MatchDataPoint[]>>;
   setSelectedMatch: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -22,10 +22,7 @@ const GlobalContext = createContext<GlobalContextProps>({
   matches: [],
   matchDataPoints: [
     {
-      gameId: -1,
-      gameName: "",
       gamePoints: 0,
-      matchId: -1,
       playerName: "",
       pointsDescription: ""
     }

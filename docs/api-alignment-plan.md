@@ -1,6 +1,6 @@
 # Frontend ↔ API alignment plan
 
-Status: P0 **complete** · P1–P2 **planned** · Branch: `docs/api-alignment-plan` · Owner: TBD
+Status: P0–P1 **complete** · P2 **planned** · Branch: `docs/api-alignment-plan` · Owner: TBD
 
 ## Why
 
@@ -115,6 +115,8 @@ Status: **complete** — items 1–5 done: `getApiErrorMessage`, numeric `gamePo
    surfaced API error is visible and actionable.
 
 ### P1 — types
+
+Status: **complete** — items 6–9 done: `Game.matchesCount`, lean `MatchDataPoint`, full `Match`/`MatchStats` shapes with string dates, and a dedicated `CreateMatchDataPointRequest`.
 
 6. **`Game` type is wrong.** It declares `matches: Match[]`, but `GameDto` returns
    `matchesCount: number` (and nothing in the UI reads `game.matches`).

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "@components/MatchList/matchList.module.scss";
 import Card from "@components/Card/Card";
 import cardStyles from "@components/Card/card.module.scss";
-import { MatchDataPoints } from "@utils/types";
+import { MatchDataPoint } from "@utils/types";
 import Popup from "@components/Popup/Popup";
 import { NewMatchForm } from "@components/NewGameForm/NewMatchForm";
 import { Loader } from "@components/Loader/Loader";
@@ -42,7 +42,7 @@ export const MatchList = () => {
     handleCloseModal(); // Close the modal
   };
 
-  const handleMatchData = (matchData: MatchDataPoints[]) => {
+  const handleMatchData = (matchData: MatchDataPoint[]) => {
     const playerPointsMap: { [key: string]: number } = matchData.reduce(
       (acc, current) => {
         if (acc[toPascalCase(current.playerName)]) {
