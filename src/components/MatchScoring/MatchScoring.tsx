@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { ReturnButton } from "@components/ReturnButton/ReturnButton";
 import cardStyles from "@components/Card/card.module.scss";
-import { Match, MatchDataPoints } from "@utils/types";
+import { Match, MatchDataPoint } from "@utils/types";
 import { toPascalCase } from "@utils/helpers";
 import { useDownloadAsCSV } from "../../hooks/useDownloadAsCSV";
 import { useGetMatchById } from "../../hooks/useGetMatchById";
@@ -45,7 +45,7 @@ export const MatchScoring = () => {
     setShowModal(false);
   };
 
-  const handleScoreData = (data: MatchDataPoints[]): PlayerScores[] => {
+  const handleScoreData = (data: MatchDataPoint[]): PlayerScores[] => {
     const result: PlayerScores[] = [];
 
     // Helper function to find a player in the result array

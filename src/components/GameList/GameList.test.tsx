@@ -20,7 +20,7 @@ const mockGames: Game[] = [
     minPlayers: 2,
     maxPlayers: 4,
     averageDuration: 60,
-    matches: []
+    matchesCount: 0
   }
 ];
 
@@ -54,12 +54,6 @@ jest.mock("../../hooks/useGetAllGames", () => ({
     fetchGame: jest.fn(),
     loading: false,
     refetchGames: jest.fn()
-  })
-}));
-
-jest.mock("../../hooks/useDeleteMatchAndDataPoints", () => ({
-  useDeleteMatchById: () => ({
-    deleteMatch: jest.fn()
   })
 }));
 

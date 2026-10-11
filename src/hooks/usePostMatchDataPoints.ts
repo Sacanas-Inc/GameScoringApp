@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
-import { MatchDataRow } from "@utils/types";
+import { getApiErrorMessage } from "@api/apiUtils";
+import { CreateMatchDataPointRequest } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";
 
 export const usePostMatchDataPoints = () => {
@@ -10,7 +11,7 @@ export const usePostMatchDataPoints = () => {
       matchDataPoints,
       matchId
     }: {
-      matchDataPoints: MatchDataRow;
+      matchDataPoints: CreateMatchDataPointRequest;
       matchId: string | number;
     }) => {
       const response = await api.PostMatchDataPoints(matchId, matchDataPoints);
@@ -33,7 +34,7 @@ export const usePostMatchDataPoints = () => {
   });
 
   const postData = async (
-    matchDataPoints: MatchDataRow,
+    matchDataPoints: CreateMatchDataPointRequest,
     matchId: string | number
   ) => {
     try {
@@ -48,6 +49,6 @@ export const usePostMatchDataPoints = () => {
   return {
     postData,
     loading: mutation.isPending,
-    error: mutation.error ? String(mutation.error) : null
+    error: mutation.error ? getApiErrorMessage(mutation.error) : null
   };
 };

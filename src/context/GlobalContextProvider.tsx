@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Game, Match, MatchDataPoints } from "@utils/types";
+import { Game, Match, MatchDataPoint } from "@utils/types";
 import GlobalContext from "./globalContext";
 
 // Define the provider component
@@ -10,7 +10,7 @@ export const GlobalContextProvider = ({
 }) => {
   const [games, setGames] = useState<Game[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
-  const [matchDataPoints, setMatchDataPoints] = useState<MatchDataPoints[]>([]);
+  const [matchDataPoints, setMatchDataPoints] = useState<MatchDataPoint[]>([]);
   const [selectedGame, setSelectedGame] = useState<number>(-1);
   const [selectedMatch, setSelectedMatch] = useState<number>(-1);
 

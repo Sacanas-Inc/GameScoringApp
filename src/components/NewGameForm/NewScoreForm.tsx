@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { MatchDataRow } from "@utils/types";
+import { CreateMatchDataPointRequest } from "@utils/types";
 import { usePostMatchDataPoints } from "@hooks/usePostMatchDataPoints";
 
 const initialFormState = {
@@ -23,7 +23,7 @@ export const NewScoreForm = ({
   const { error, loading, postData } = usePostMatchDataPoints();
 
   const { matchId = 0 } = useParams();
-  const [newGameData, setNewGameData] = useState<MatchDataRow>({
+  const [newGameData, setNewGameData] = useState<CreateMatchDataPointRequest>({
     ...initialFormState
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -51,12 +51,22 @@ export const NewScoreForm = ({
     e.preventDefault();
 
     const newErrors = validate();
+    // The number input keeps its value as a string in state; .NET rejects a
+    // string for an `int`, so coerce before posting.
+    const gamePoints = Number(newGameData.gamePoints);
+    if (Number.isNaN(gamePoints)) {
+      newErrors.gamePoints = "Game Points must be a number";
+    }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    await postData(newGameData, matchId);
+    const result = await postData({ ...newGameData, gamePoints }, matchId);
+    if (result === undefined) {
+      // Request failed; the hook surfaces the API error so the form stays open.
+      return;
+    }
 
     setNewGameData({
       ...initialFormState

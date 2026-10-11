@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import api from "@api/api";
+import { getApiErrorMessage } from "@api/apiUtils";
 import { Match } from "@utils/types";
 import { queryKeys } from "@api/queryKeys";
 
@@ -25,7 +26,7 @@ export const useGetAllMatchesByGameId = (gameId?: string | number) => {
 
   return {
     loading: isLoading,
-    error: error ? String(error) : null,
+    error: error ? getApiErrorMessage(error) : null,
     matches: data ?? [],
     refetch
   };

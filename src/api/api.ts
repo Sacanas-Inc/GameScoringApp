@@ -11,10 +11,7 @@ import {
   PostMatch,
   DeleteMatch
 } from "@api/Match/MatchAPI";
-import {
-  GetMatchDataPoints,
-  PostMatchDataPoints
-} from "@api/MatchDataPoint/MatchDataPointAPI";
+import { PostMatchDataPoints } from "@api/MatchDataPoint/MatchDataPointAPI";
 
 const api = {
   GetAllGames,
@@ -26,7 +23,6 @@ const api = {
   GetMatchById,
   PostMatch,
   DeleteMatch,
-  GetMatchDataPoints,
   PostMatchDataPoints
 };
 

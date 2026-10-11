@@ -1,6 +1,7 @@
 // hooks/usePostGame.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { getApiErrorMessage } from "@api/apiUtils";
 import { queryKeys } from "@api/queryKeys";
 
 export interface GameData {
@@ -38,6 +39,6 @@ export const usePostGame = () => {
   return {
     postGame,
     loading: mutation.isPending,
-    error: mutation.error ? String(mutation.error) : null
+    error: mutation.error ? getApiErrorMessage(mutation.error) : null
   };
 };

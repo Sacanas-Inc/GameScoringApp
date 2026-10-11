@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@api/api";
+import { getApiErrorMessage } from "@api/apiUtils";
 import { queryKeys } from "@api/queryKeys";
 
 export interface MatchData {
@@ -11,7 +12,13 @@ export const usePostMatch = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (matchData: MatchData) => {
-      const response = await api.PostMatch(matchData);
+      // `matchDate` is required by the API and `isFinished` defaults to false.
+      // We keep it a default here (no date picker) so creation always succeeds.
+      const response = await api.PostMatch({
+        ...matchData,
+        matchDate: new Date().toISOString(),
+        isFinished: false
+      });
       if (response.status < 200 || response.status >= 300) {
         throw new Error(`API response Status: ${response.status}`, {
           cause: response.statusText
@@ -40,6 +47,6 @@ export const usePostMatch = () => {
   return {
     postMatch,
     loading: mutation.isPending,
-    error: mutation.error ? String(mutation.error) : null
+    error: mutation.error ? getApiErrorMessage(mutation.error) : null
   };
 };

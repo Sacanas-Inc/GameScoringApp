@@ -25,7 +25,7 @@ jest.mock("../../hooks/useGetGameById", () => ({
       minPlayers: 2,
       maxPlayers: 4,
       averageDuration: 60,
-      matches: []
+      matchesCount: 0
     },
     fetchGame: jest.fn(),
     loading: false
@@ -39,15 +39,12 @@ jest.mock("../../hooks/useGetMatchById", () => ({
         gameId: 1,
         matchDataPoints: [
           {
-            gameId: 1,
-            gameName: "Hadara",
-            matchId: 3,
             playerName: "Miguel",
             gamePoints: 12,
             pointsDescription: "Bustos"
           }
         ],
-        matchDate: new Date(),
+        matchDate: new Date().toISOString(),
         matchId: 3,
         notes: "Tiebreaker on Sunday"
       }),

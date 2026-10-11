@@ -1,20 +1,26 @@
-export type MatchDataPoints = {
+export type MatchDataPoint = {
   id?: number;
-  gameId: number;
-  gameName: string;
-  matchId: number;
   playerName: string;
   gamePoints: number;
   pointsDescription: string;
-  createdDate?: Date;
+  createdDate?: string;
+};
+
+export type MatchStats = {
+  totalGamePoints: number;
+  winningPlayer: string | null;
+  playerPoints: Record<string, number>;
 };
 
 export type Match = {
   gameId?: number;
-  matchDataPoints: MatchDataPoints[];
-  matchDate?: Date;
+  matchDataPoints: MatchDataPoint[];
+  matchDate?: string;
   matchId: number;
   notes?: string | null;
+  playerCount?: number;
+  isFinished?: boolean;
+  matchStats?: MatchStats;
 };
 
 export interface Game {
@@ -24,12 +30,10 @@ export interface Game {
   minPlayers: number;
   maxPlayers: number;
   averageDuration: number;
-  matches: Match[];
+  matchesCount: number;
 }
 
-export type Games = Game & { matches: Match[] }[];
-
-export interface MatchDataRow {
+export interface CreateMatchDataPointRequest {
   playerName: string;
   gamePoints: number;
   pointsDescription: string;
