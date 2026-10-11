@@ -1,6 +1,6 @@
 # Frontend ↔ API alignment plan
 
-Status: P0–P1 **complete** · P2 **planned** · Branch: `docs/api-alignment-plan` · Owner: TBD
+Status: P0–P2 **complete** · Branch: `docs/api-alignment-plan` · Owner: TBD
 
 ## Why
 
@@ -141,6 +141,8 @@ Status: **complete** — items 6–9 done: `Game.matchesCount`, lean `MatchDataP
    `CreateMatchDataPointRequest = { playerName; gamePoints; pointsDescription }`.
 
 ### P2 — cleanup (no behavior change)
+
+Status: **complete** — items 10–12 done: match delete uses `DELETE /match/{id}`, `api.GetMatchDataPoints` and `useGetMatchGames` removed, README links fixed.
 
 10. Switch the match delete to `DELETE /match/{id}` (the API now deletes cleanly,
    including child rows). Keep the current route if you want zero churn.

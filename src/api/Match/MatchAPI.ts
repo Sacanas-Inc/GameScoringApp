@@ -7,7 +7,7 @@ const url = (param?: string | number) => ({
   getAllMatchesByGameId: `matches?includeDataPoints=true&gameId=${param}`,
   getMatchById: `match/${param}?includeDataPoints=true`,
   postMatch: "match",
-  deleteMatchAndDataPoints: `/match-and-data-points/${param}`
+  deleteMatch: `match/${param}`
 });
 
 export const GetAllMatches = async (param?: any): Promise<AxiosResponse> =>
@@ -24,4 +24,4 @@ export const PostMatch = async (param?: any): Promise<AxiosResponse> =>
   instance.post(url().postMatch, param);
 
 export const DeleteMatch = async (param?: any): Promise<AxiosResponse> =>
-  instance.delete(url(param).deleteMatchAndDataPoints);
+  instance.delete(url(param).deleteMatch);

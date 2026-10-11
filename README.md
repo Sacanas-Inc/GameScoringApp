@@ -122,7 +122,7 @@ Here's an example flow through the app:
 
 ## Backend API
 
-This frontend consumes the [Game Scoring API](https://github.com/Sacanas-Inc/GameScoringApi). Interactive API docs are hosted at [gamescoringapi.azurewebsites.net/index.html](https://gamescoringapi.azurewebsites.net/index.html). The base URL is configured through the `REACT_APP_API_BASE_URL` variable described above.
+This frontend consumes the [Game Scoring API](https://github.com/Sacanas-Inc/GameScoringAPI). Interactive API docs are hosted at [gamescoringapi.azurewebsites.net](https://gamescoringapi.azurewebsites.net/). The base URL is configured through the `REACT_APP_API_BASE_URL` variable described above.
 
 ## Deployment
 
